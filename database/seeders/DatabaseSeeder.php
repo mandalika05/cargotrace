@@ -1,23 +1,33 @@
 <?php
+/*
+ * ============================================================
+ * BUAT APA : Mengisi data awal (akun demo untuk dosen/recruiter).
+ *            Jalankan: php artisan db:seed  (atau migrate:fresh --seed)
+ * AKUN DEMO: password semuanya 'password' (hanya untuk demo lokal).
+ * AMAN DIULANG: akun yang sudah ada tidak dibuat dua kali.
+ * ============================================================
+ */
 
 namespace Database\Seeders;
 
 use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        // User::factory(10)->create();
+        $akunDemo = [
+            ['Demo Admin',    'admin@cargotrace.test',    User::ROLE_ADMIN],
+            ['Demo Operator', 'operator@cargotrace.test', User::ROLE_OPERATOR],
+            ['Demo Customer', 'customer@cargotrace.test', User::ROLE_CUSTOMER],
+        ];
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        foreach ($akunDemo as [$name, $email, $role]) {
+            if (! User::where('email', $email)->exists()) {
+                // Factory boleh mengisi 'role' walau tidak ada di $fillable
+                User::factory()->create(['name' => $name, 'email' => $email, 'role' => $role]);
+            }
+        }
     }
 }
