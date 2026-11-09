@@ -1,12 +1,163 @@
+/*
+ * ============================================================
+ * BUAT APA : Satu-satunya tempat TEMA WARNA CargoTrace ("Deep Forest & Brass").
+ *            Ganti warna di blok @theme di bawah = seluruh aplikasi ikut berubah.
+ * ATURAN   : forest = warna dominan, brass = hiasan kecil saja,
+ *            transit/delay/exception/delivered = KHUSUS penanda status.
+ * Tailwind v4: warna di @theme otomatis jadi kelas, mis. bg-forest, text-brass,
+ *              border-forest/10 (garis 10% transparan).
+ * ============================================================
+ */
 @import 'tailwindcss';
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
-@source "../**/*.blade.php";
-@source "../**/*.js";
-@source "../**/*.vue";
+@source '../**/*.blade.php';
+@source '../**/*.js';
 
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+  --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Fraunces', Georgia, serif;
+
+  /* Dasar */
+  --color-sand: #f6f4ee;       /* latar halaman */
+  --color-ivory: #fffefb;      /* latar kartu */
+  --color-forest: #0f2f2a;     /* sidebar, judul, tombol utama */
+  --color-jade: #1f8a70;       /* aksen utama (dipakai hemat) */
+  --color-brass: #b8893b;      /* hiasan mewah: logo, garis tipis */
+  --color-brass-light: #d9b26a; /* kuningan terang: teks emas di atas latar gelap */
+
+  /* Khusus status */
+  --color-transit: #0e7c86;
+  --color-delay: #e08a1e;
+  --color-exception: #c0392b;
+  --color-delivered: #2e9e5b;
+}
+
+body {
+  @apply bg-sand font-sans text-forest antialiased;
+}
+
+/* ---------- Komponen yang dipakai berulang ---------- */
+@layer components {
+  .card {
+    @apply rounded-2xl border border-forest/10 bg-ivory shadow-[0_8px_30px_rgba(15,47,42,0.06)];
+  }
+  .btn-primary {
+    @apply inline-flex items-center justify-center rounded-xl bg-forest px-4 py-2.5 text-sm font-semibold text-ivory transition hover:bg-jade focus:outline-none focus-visible:ring-2 focus-visible:ring-brass focus-visible:ring-offset-2 focus-visible:ring-offset-sand;
+  }
+  .btn-ghost {
+    @apply inline-flex items-center justify-center rounded-xl border border-forest/15 px-3.5 py-2 text-sm font-semibold text-forest transition hover:bg-forest/5;
+  }
+  .field-label {
+    @apply mb-1.5 block text-sm font-semibold text-forest;
+  }
+  .field-input {
+    @apply block w-full rounded-xl border border-forest/15 bg-white px-3.5 py-2.5 text-sm text-forest placeholder:text-forest/40 focus:border-jade focus:outline-none focus:ring-2 focus:ring-jade/25;
+  }
+  .field-error {
+    @apply mt-1.5 text-sm text-exception;
+  }
+
+  /* Chip status (dipakai di tabel shipment mulai P9) */
+  .chip {
+    @apply inline-flex items-center rounded-full px-2.5 py-1 text-xs font-bold tracking-wide;
+  }
+  .chip-neutral   { @apply bg-forest/8 text-forest; }
+  .chip-transit   { @apply bg-transit/10 text-transit; }
+  .chip-delay     { @apply bg-delay/15 text-[#a8620a]; }
+  .chip-exception { @apply bg-exception/10 text-exception; }
+  .chip-delivered { @apply bg-delivered/10 text-[#1f7a43]; }
+
+  /* ============================================================
+     KELAS TATA LETAK (dipakai di file Blade).
+     Kenapa dibuat di sini: kelas bergaya @apply SELALU ikut dibuat oleh Tailwind,
+     tanpa bergantung pada pemindaian file Blade. Jadi tampilan pasti muncul.
+     ============================================================ */
+
+  /* --- Halaman sebelum login --- */
+  .auth-page        { @apply grid min-h-screen bg-sand lg:grid-cols-[1.15fr_1fr]; }
+  .auth-aside       { @apply relative hidden flex-col justify-between overflow-hidden px-14 py-12 text-ivory lg:flex;
+                      background:
+                        radial-gradient(60rem 40rem at 10% 0%, rgba(31,138,112,.28), transparent 60%),
+                        linear-gradient(160deg, #123a34 0%, #0f2f2a 55%, #0a2420 100%); }
+  .auth-aside::before { content: ''; position: absolute; inset: 0; pointer-events: none;
+                      background-image: radial-gradient(rgba(255,254,251,.08) 1px, transparent 1px);
+                      background-size: 24px 24px;
+                      -webkit-mask-image: linear-gradient(180deg, #000 0%, transparent 70%);
+                              mask-image: linear-gradient(180deg, #000 0%, transparent 70%); }
+  .auth-glow        { @apply pointer-events-none absolute h-80 w-80 rounded-full bg-jade/25 blur-3xl; animation: drift 16s ease-in-out infinite alternate; }
+  .auth-glow-b      { @apply bg-brass/15; animation-duration: 22s; }
+  .auth-top, .auth-middle, .auth-bottom { @apply relative z-10; }
+  .auth-logo        { @apply font-display text-2xl tracking-tight; }
+  .brand-accent     { @apply text-brass; }
+  .auth-aside .brand-accent { @apply text-brass-light; }
+  .auth-rule        { @apply mb-6 h-px w-16 bg-brass-light; }
+  .auth-headline    { @apply font-display text-5xl leading-[1.08] xl:text-6xl; }
+  .headline-line    { @apply block; }
+  .headline-word    { @apply inline-block whitespace-nowrap; }
+  .headline-accent  { @apply text-brass-light; }
+  .wave-char        { @apply inline-block; animation: wave 3.4s ease-in-out 2; animation-delay: calc(var(--i) * 0.09s); }
+  .auth-lead        { @apply mt-6 max-w-md text-base leading-relaxed text-ivory/70; animation: fade-up 1s ease-out 0.5s both; }
+  .auth-route       { @apply -mx-4 mb-2; }
+  .route-line       { stroke-dasharray: 6 10; animation: dash 1.8s linear infinite; }
+  .auth-foot        { @apply text-xs text-ivory/45; }
+  .auth-edge        { @apply pointer-events-none absolute inset-y-0 right-0 z-20 h-full w-20; }
+  .auth-edge path   { fill: #f6f4ee; /* sama dengan warna sand */ }
+  .auth-main        { @apply flex items-center justify-center p-6 sm:p-10; }
+  .auth-box         { @apply w-full max-w-md; }
+  .auth-mobile-logo { @apply mb-8 font-display text-2xl tracking-tight lg:hidden; }
+  .auth-card        { @apply p-7 sm:p-9; }
+
+  /* --- Isi formulir login / daftar --- */
+  .form-title { @apply font-display text-2xl; }
+  .form-sub   { @apply mt-1 text-sm text-forest/60; }
+  .form-stack { @apply mt-6 space-y-4; }
+  .form-hint  { @apply mt-1.5 text-xs text-forest/50; }
+  .form-foot  { @apply mt-6 text-center text-sm text-forest/60; }
+  .check-row  { @apply flex items-center gap-2 text-sm text-forest/70; }
+  .check-box  { @apply rounded border-forest/30 text-jade focus:ring-jade/30; }
+  .btn-block  { @apply w-full; }
+  .link-accent{ @apply font-semibold text-jade hover:underline; }
+  .demo-box   { @apply mt-6 rounded-xl border border-brass/30 bg-brass/5 p-4 text-xs leading-relaxed text-forest/70; }
+  .demo-title { @apply mb-1 font-bold text-brass; }
+
+  /* --- Halaman sesudah login --- */
+  .app-shell     { @apply min-h-screen lg:grid lg:grid-cols-[16rem_1fr]; }
+  .sidebar       { @apply sticky top-0 hidden h-screen flex-col bg-forest px-4 py-6 lg:flex; }
+  .sidebar-brand { @apply px-3 pb-8 font-display text-2xl tracking-tight text-ivory; }
+  .nav-list      { @apply flex-1 space-y-1; }
+  .nav-link      { @apply flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-semibold text-ivory/65 transition hover:bg-white/5 hover:text-ivory; }
+  .nav-link-active { @apply bg-white/10 text-ivory shadow-[inset_3px_0_0_0_#b8893b]; }
+  .sidebar-user  { @apply border-t border-white/10 pt-4; }
+  .sidebar-name  { @apply px-3 text-sm font-semibold text-ivory; }
+  .sidebar-role  { @apply px-3 text-xs capitalize text-brass; }
+  .sidebar-signout { @apply mt-3 w-full rounded-lg px-3 py-2 text-left text-sm font-semibold text-ivory/65 transition hover:bg-white/5 hover:text-ivory; }
+  .app-content   { @apply min-w-0; }
+  .mobile-bar    { @apply flex items-center justify-between bg-forest px-4 py-3 text-ivory lg:hidden; }
+  .mobile-signout{ @apply text-sm font-semibold text-ivory/80; }
+  .page-main     { @apply mx-auto max-w-7xl px-5 py-8 sm:px-8; }
+  .page-title    { @apply font-display text-3xl tracking-tight; }
+  .page-rule     { @apply mt-1 h-px w-12 bg-brass; }
+  .page-body     { @apply mt-8; }
+  .flash-success { @apply mt-6 rounded-xl border border-delivered/30 bg-delivered/10 px-4 py-3 text-sm font-semibold text-[#1f7a43]; }
+  .flash-error   { @apply mt-6 rounded-xl border border-exception/30 bg-exception/10 px-4 py-3 text-sm font-semibold text-exception; }
+
+  /* --- Dashboard sementara --- */
+  .welcome-card  { @apply p-6 sm:p-8; }
+  .eyebrow       { @apply text-sm font-semibold uppercase tracking-widest text-brass; }
+  .welcome-title { @apply mt-2 font-display text-2xl; }
+  .welcome-text  { @apply mt-2 max-w-xl text-sm leading-relaxed text-forest/65; }
+  .chip-row      { @apply mt-6 flex flex-wrap gap-2; }
+}
+
+/* ---------- Animasi halaman login ---------- */
+@keyframes wave    { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+@keyframes dash    { to { stroke-dashoffset: -32; } }
+@keyframes drift   { from { transform: translate(0, 0) scale(1); } to { transform: translate(60px, 40px) scale(1.15); } }
+@keyframes fade-up { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Hormati pengguna yang meminta animasi dikurangi */
+@media (prefers-reduced-motion: reduce) {
+  .wave-char, .route-line, .auth-glow, .auth-lead { animation: none !important; }
 }
