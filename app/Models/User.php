@@ -14,6 +14,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -51,5 +52,9 @@ class User extends Authenticatable
     public function isOperator(): bool { return $this->role === self::ROLE_OPERATOR; }
     public function isCustomer(): bool { return $this->role === self::ROLE_CUSTOMER; }
 
-    // Relasi shipments() (hasMany) ditambahkan di P9, setelah model Shipment ada.
+    // Shipment milik customer ini (satu customer punya banyak shipment)
+    public function shipments(): HasMany
+    {
+        return $this->hasMany(Shipment::class, 'customer_id');
+    }
 }
