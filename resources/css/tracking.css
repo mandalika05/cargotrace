@@ -1,0 +1,62 @@
+/*
+ * ============================================================
+ * BUAT APA : Gaya khusus timeline & lokasi terkini (P10).
+ * DIPISAH dari app.css supaya app.css yang sudah final tidak diubah.
+ * Dimuat lewat SATU baris di app.css:  @import './tracking.css';
+ * Sengaja memakai CSS biasa (tanpa @apply) dengan warna palet yang sama:
+ *   forest #0f2f2a | brass #b8893b | transit #0e7c86 | delivered #2e9e5b
+ *   exception #c0392b | delay #e08a1e
+ * ============================================================
+ */
+
+/* ----- Kartu lokasi terkini ----- */
+.current-loc { display: flex; align-items: center; gap: 0.9rem; }
+.current-loc-icon {
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  width: 3rem; height: 3rem; border-radius: 9999px;
+  background: rgba(14, 124, 134, 0.1); color: #0e7c86;
+}
+.current-loc-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(15, 47, 42, 0.5); }
+.current-loc-name { font-family: 'Fraunces', Georgia, serif; font-size: 1.25rem; line-height: 1.2; color: #0f2f2a; }
+.current-loc-meta { margin-top: 0.15rem; font-size: 0.78rem; color: rgba(15, 47, 42, 0.55); }
+
+/* ----- Timeline vertikal ----- */
+.tl-wrap { position: relative; margin: 0; padding: 0 0 0 1.9rem; list-style: none; }
+.tl-wrap::before {
+  content: ''; position: absolute; left: 0.62rem; top: 0.5rem; bottom: 0.5rem;
+  width: 2px; background: rgba(15, 47, 42, 0.12); border-radius: 2px;
+}
+.tl-item { position: relative; padding-bottom: 1.5rem; }
+.tl-item:last-child { padding-bottom: 0; }
+
+.tl-dot {
+  position: absolute; left: -1.9rem; top: 0.15rem;
+  width: 1.3rem; height: 1.3rem; border-radius: 9999px;
+  background: #fffefb; border: 3px solid #b8893b; box-sizing: border-box;
+}
+.tl-dot-neutral   { border-color: #b8893b; }
+.tl-dot-transit   { border-color: #0e7c86; }
+.tl-dot-delivered { border-color: #2e9e5b; background: #2e9e5b; }
+.tl-dot-cancelled { border-color: #9aa5a2; background: #9aa5a2; }
+.tl-dot-reopened  { border-color: #e08a1e; }
+.tl-dot-exception { border-color: #c0392b; background: #c0392b; } /* dipakai di P11 */
+
+.tl-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.15rem 0.75rem; }
+.tl-title { font-weight: 700; color: #0f2f2a; }
+.tl-time  { font-size: 0.78rem; color: rgba(15, 47, 42, 0.55); }
+.tl-place { margin-top: 0.15rem; font-size: 0.88rem; color: #0f2f2a; }
+.tl-desc  { margin-top: 0.25rem; font-size: 0.86rem; line-height: 1.5; color: rgba(15, 47, 42, 0.72); }
+.tl-by    { margin-top: 0.25rem; font-size: 0.74rem; color: rgba(15, 47, 42, 0.45); }
+.tl-latest-badge {
+  display: inline-block; margin-left: 0.4rem; padding: 0.1rem 0.5rem; border-radius: 9999px;
+  background: rgba(184, 137, 59, 0.15); color: #8a6420; font-size: 0.65rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase;
+}
+
+/* ----- Panel tindakan (form event, reopen) ----- */
+.tracking-actions { display: grid; gap: 1.25rem; }
+@media (min-width: 64rem) { .tracking-actions { grid-template-columns: 1fr 1fr; } }
+.hint-box {
+  padding: 0.85rem 1rem; border-radius: 0.75rem; font-size: 0.85rem; line-height: 1.5;
+  background: rgba(184, 137, 59, 0.08); border: 1px solid rgba(184, 137, 59, 0.25); color: rgba(15, 47, 42, 0.75);
+}
+.next-steps { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.5rem; }

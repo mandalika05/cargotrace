@@ -96,6 +96,8 @@
                     <div><dt class="kv-key">Volume</dt><dd class="kv-val">{{ number_format($shipment->volume_cbm, 2) }} m&sup3;</dd></div>
                 </dl>
             </div>
-        </div>
+                </div>
     </div>
+
+    @include('shipments.partials.tracking')
 @endsection
