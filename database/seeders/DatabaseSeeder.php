@@ -34,6 +34,7 @@ class DatabaseSeeder extends Seeder
             CarrierSeeder::class,
             LocationSeeder::class,
             ShipmentSeeder::class,
+            TrackingEventSeeder::class,
         ]);
     }
 }

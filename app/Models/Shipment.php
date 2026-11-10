@@ -22,7 +22,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Shipment extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, HasTracking;
 
     public const STATUS_CREATED = 'CREATED';
     public const STATUS_BOOKED = 'BOOKED';
