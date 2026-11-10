@@ -40,9 +40,9 @@
 
     {{-- Petunjuk akun demo: hanya muncul di lokal/staging, hilang di production --}}
     @unless (app()->isProduction())
-        <div class="demo-box">
-            <div class="demo-title">Demo accounts (password: <code>password</code>)</div>
-            admin@cargotrace.test<br>operator@cargotrace.test<br>customer@cargotrace.test
-        </div>
+        <details class="demo-box">
+            <summary class="demo-summary">Demo accounts (password: <code>password</code>)</summary>
+            <div class="demo-list">admin@cargotrace.test<br>operator@cargotrace.test<br>customer@cargotrace.test</div>
+        </details>
     @endunless
 @endsection

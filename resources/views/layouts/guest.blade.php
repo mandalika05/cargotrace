@@ -101,9 +101,22 @@
         </svg>
     </aside>
 
+    {{-- Pita hijau versi HP (di laptop disembunyikan oleh CSS) --}}
+    <header class="auth-ribbon">
+        <div class="auth-ribbon-logo">Cargo<span class="brand-accent">Trace</span></div>
+        <p class="auth-ribbon-tag">Every shipment, always in sight.</p>
+        <svg class="auth-ribbon-route" viewBox="0 0 300 40" fill="none" aria-hidden="true">
+            <path d="M6 30 C70 2 130 38 190 16 S270 4 294 12" class="route-line" stroke="#d9b26a" stroke-width="2" stroke-linecap="round" opacity=".85"/>
+            <circle cx="6" cy="30" r="4" fill="#d9b26a"/>
+            <circle cx="294" cy="12" r="4" fill="#d9b26a"/>
+            <rect x="-5" y="-5" width="10" height="10" rx="3" fill="#fffefb" stroke="#d9b26a" stroke-width="1.5">
+                <animateMotion dur="7s" repeatCount="indefinite" path="M6 30 C70 2 130 38 190 16 S270 4 294 12"/>
+            </rect>
+        </svg>
+    </header>
+
     <main class="auth-main">
         <div class="auth-box">
-            <div class="auth-mobile-logo">Cargo<span class="brand-accent">Trace</span></div>
             <div class="card auth-card">
                 @yield('content')
             </div>

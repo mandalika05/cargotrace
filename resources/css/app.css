@@ -44,10 +44,10 @@ body {
     @apply rounded-2xl border border-forest/10 bg-ivory shadow-[0_8px_30px_rgba(15,47,42,0.06)];
   }
   .btn-primary {
-    @apply inline-flex items-center justify-center rounded-xl bg-forest px-4 py-2.5 text-sm font-semibold text-ivory transition hover:bg-jade focus:outline-none focus-visible:ring-2 focus-visible:ring-brass focus-visible:ring-offset-2 focus-visible:ring-offset-sand;
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-forest px-4 py-2.5 text-sm font-semibold text-ivory transition hover:bg-jade focus:outline-none focus-visible:ring-2 focus-visible:ring-brass focus-visible:ring-offset-2 focus-visible:ring-offset-sand;
   }
   .btn-ghost {
-    @apply inline-flex items-center justify-center rounded-xl border border-forest/15 px-3.5 py-2 text-sm font-semibold text-forest transition hover:bg-forest/5;
+    @apply inline-flex items-center justify-center gap-2 rounded-xl border border-forest/15 px-3.5 py-2 text-sm font-semibold text-forest transition hover:bg-forest/5;
   }
   .field-label {
     @apply mb-1.5 block text-sm font-semibold text-forest;
@@ -97,16 +97,24 @@ body {
   .headline-line    { @apply block; }
   .headline-word    { @apply inline-block whitespace-nowrap; }
   .headline-accent  { @apply text-brass-light; }
-  .wave-char        { @apply inline-block; animation: wave 3.4s ease-in-out 2; animation-delay: calc(var(--i) * 0.09s); }
+  .wave-char        { @apply inline-block; animation: wave 3.4s ease-in-out 2; animation-delay: calc(var(--i) * 0.09s); } /* goyang 2 kali lalu diam */
   .auth-lead        { @apply mt-6 max-w-md text-base leading-relaxed text-ivory/70; animation: fade-up 1s ease-out 0.5s both; }
   .auth-route       { @apply -mx-4 mb-2; }
   .route-line       { stroke-dasharray: 6 10; animation: dash 1.8s linear infinite; }
   .auth-foot        { @apply text-xs text-ivory/45; }
   .auth-edge        { @apply pointer-events-none absolute inset-y-0 right-0 z-20 h-full w-20; }
   .auth-edge path   { fill: #f6f4ee; /* sama dengan warna sand */ }
-  .auth-main        { @apply flex items-center justify-center p-6 sm:p-10; }
+  .auth-main        { @apply relative z-10 -mt-8 flex items-start justify-center px-5 pb-10 lg:mt-0 lg:items-center lg:p-10; }
   .auth-box         { @apply w-full max-w-md; }
-  .auth-mobile-logo { @apply mb-8 font-display text-2xl tracking-tight lg:hidden; }
+  /* Pita hijau versi HP (disembunyikan di layar lebar) */
+  .auth-ribbon      { @apply relative overflow-hidden px-6 pb-14 pt-9 text-ivory lg:hidden;
+                      background: radial-gradient(30rem 16rem at 0% 0%, rgba(31,138,112,.35), transparent 60%),
+                                  linear-gradient(160deg, #123a34 0%, #0f2f2a 60%, #0a2420 100%);
+                      border-bottom-left-radius: 50% 1.75rem; border-bottom-right-radius: 50% 1.75rem; }
+  .auth-ribbon-logo { @apply font-display text-2xl tracking-tight; }
+  .auth-ribbon .brand-accent { @apply text-brass-light; }
+  .auth-ribbon-tag  { @apply mt-2 max-w-xs text-sm text-ivory/75; animation: fade-up .9s ease-out both; }
+  .auth-ribbon-route{ @apply mt-4 w-full max-w-xs; }
   .auth-card        { @apply p-7 sm:p-9; }
 
   /* --- Isi formulir login / daftar --- */
@@ -120,6 +128,8 @@ body {
   .btn-block  { @apply w-full; }
   .link-accent{ @apply font-semibold text-jade hover:underline; }
   .demo-box   { @apply mt-6 rounded-xl border border-brass/30 bg-brass/5 p-4 text-xs leading-relaxed text-forest/70; }
+  .demo-summary { @apply cursor-pointer font-bold text-brass; }
+  .demo-list  { @apply mt-2; }
   .demo-title { @apply mb-1 font-bold text-brass; }
 
   /* --- Halaman sesudah login --- */
@@ -132,11 +142,19 @@ body {
   .sidebar-user  { @apply border-t border-white/10 pt-4; }
   .sidebar-name  { @apply px-3 text-sm font-semibold text-ivory; }
   .sidebar-role  { @apply px-3 text-xs capitalize text-brass; }
-  .sidebar-signout { @apply mt-3 w-full rounded-lg px-3 py-2 text-left text-sm font-semibold text-ivory/65 transition hover:bg-white/5 hover:text-ivory; }
+  .sidebar-signout { @apply mt-3 flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-sm font-semibold text-ivory/65 transition hover:bg-white/5 hover:text-ivory; }
   .app-content   { @apply min-w-0; }
-  .mobile-bar    { @apply flex items-center justify-between bg-forest px-4 py-3 text-ivory lg:hidden; }
-  .mobile-signout{ @apply text-sm font-semibold text-ivory/80; }
+  .mobile-head   { @apply sticky top-0 z-30 bg-forest text-ivory lg:hidden; }
+  .mobile-bar    { @apply flex items-center justify-between px-4 py-3; }
+  .menu-button   { @apply inline-flex h-10 w-10 items-center justify-center rounded-lg text-ivory transition hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-brass; }
+  .mobile-menu   { @apply hidden; }
+  .mobile-menu.is-open { @apply block border-t border-white/10 px-4 pb-4 pt-3; }
+  .mobile-nav    { @apply space-y-1; }
+  .mobile-user   { @apply mt-3 flex items-center justify-between border-t border-white/10 pt-3; }
+  .mobile-signout{ @apply flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold text-ivory/80 hover:bg-white/10; }
   .page-main     { @apply mx-auto max-w-7xl px-5 py-8 sm:px-8; }
+  .page-head     { @apply flex flex-wrap items-start justify-between gap-4; }
+  .page-actions  { @apply flex flex-wrap items-center gap-2; }
   .page-title    { @apply font-display text-3xl tracking-tight; }
   .page-rule     { @apply mt-1 h-px w-12 bg-brass; }
   .page-body     { @apply mt-8; }
@@ -149,6 +167,113 @@ body {
   .welcome-title { @apply mt-2 font-display text-2xl; }
   .welcome-text  { @apply mt-2 max-w-xl text-sm leading-relaxed text-forest/65; }
   .chip-row      { @apply mt-6 flex flex-wrap gap-2; }
+
+  /* ============================================================
+     KOMPONEN P9: tombol, filter, tabel, kartu HP, detail, formulir
+     ============================================================ */
+
+  .btn-danger  { @apply inline-flex items-center justify-center gap-2 rounded-xl border border-exception/30 px-3.5 py-2 text-sm font-semibold text-exception transition hover:bg-exception/10; }
+  .btn-sm      { @apply px-3 py-1.5 text-xs; }
+  .chip-cancelled { @apply bg-forest/15 text-forest/60; }
+
+  /* tampil hanya di HP / hanya di layar >= md */
+  .only-mobile  { @apply md:hidden; }
+  .only-desktop { @apply hidden md:block; }
+
+  /* --- Filter --- */
+  .filter-bar   { @apply p-4 sm:p-5; }
+  .filter-grid  { @apply grid gap-3 sm:grid-cols-2 lg:grid-cols-4; }
+  .filter-actions { @apply mt-4 flex flex-wrap items-center gap-2; }
+
+  /* --- Tabel (layar lebar) --- */
+  .table-wrap   { @apply overflow-x-auto rounded-2xl border border-forest/10 bg-ivory shadow-[0_8px_30px_rgba(15,47,42,0.06)]; }
+  .data-table   { @apply w-full min-w-[34rem] text-left text-sm; }
+  .data-table th { @apply whitespace-nowrap border-b border-forest/10 bg-forest/[0.03] px-4 py-3 text-xs font-bold uppercase tracking-wider text-forest/55; }
+  .data-table td { @apply border-b border-forest/5 px-4 py-3 align-middle; }
+  .data-table tr:last-child td { @apply border-b-0; }
+  .cell-link    { @apply font-bold text-forest underline decoration-brass/60 decoration-2 underline-offset-4 hover:text-jade; }
+  .cell-sub     { @apply mt-0.5 text-xs text-forest/55; }
+  .cell-actions { @apply flex flex-wrap items-center justify-end gap-2; }
+  .col-right    { @apply text-right; }
+
+  /* --- Kartu shipment (HP) --- */
+  .item-list    { @apply space-y-3; }
+  .item-card    { @apply block rounded-2xl border border-forest/10 bg-ivory p-4 shadow-[0_6px_20px_rgba(15,47,42,0.05)] transition hover:border-brass/50; }
+  .item-card-top{ @apply flex items-start justify-between gap-3; }
+  .item-card-title { @apply text-sm font-bold text-forest; }
+  .item-card-route { @apply mt-3 text-sm text-forest; }
+  .item-card-route span { @apply text-brass; }
+  .meta-grid    { @apply mt-3 grid grid-cols-2 gap-3 text-xs; }
+  .meta-label   { @apply font-semibold uppercase tracking-wider text-forest/50; }
+  .meta-value   { @apply mt-0.5 text-sm text-forest; }
+
+  /* --- Bar progres --- */
+  .progress     { @apply mt-3 h-1.5 w-full overflow-hidden rounded-full bg-forest/10; }
+  .progress-bar { @apply h-full rounded-full; background: linear-gradient(90deg, #1f8a70, #b8893b); }
+  .progress-cell{ @apply w-28; }
+  .progress-cell .progress { @apply mt-0; }
+
+  /* --- Kosong --- */
+  .empty-state  { @apply rounded-2xl border border-dashed border-forest/20 bg-ivory/60 px-6 py-12 text-center text-sm text-forest/60; }
+  .empty-title  { @apply font-display text-xl text-forest; }
+
+  /* --- Pagination --- */
+  .pager        { @apply mt-5 flex flex-col items-center justify-between gap-3 sm:flex-row; }
+  .pager-info   { @apply text-sm text-forest/60; }
+  .pager-links  { @apply flex items-center gap-2; }
+  .pager-page   { @apply px-2 text-sm font-semibold text-forest/70; }
+  .pager-btn    { @apply inline-flex items-center rounded-xl border border-forest/15 bg-ivory px-3.5 py-2 text-sm font-semibold text-forest transition hover:bg-forest/5; }
+  .pager-disabled { @apply cursor-not-allowed opacity-40 hover:bg-ivory; }
+
+  /* --- Halaman detail shipment --- */
+  .detail-head  { @apply flex flex-wrap items-center gap-3; }
+  .detail-grid  { @apply grid gap-5 lg:grid-cols-3; }
+  .detail-main  { @apply space-y-5 lg:col-span-2; }
+  .detail-side  { @apply space-y-5; }
+  .panel        { @apply p-5 sm:p-6; }
+  .panel-title  { @apply mb-4 font-display text-lg; }
+  .route-row    { @apply flex items-center gap-3; }
+  .route-end    { @apply min-w-0 flex-1; }
+  .route-city   { @apply font-display text-xl leading-tight sm:text-2xl; }
+  .route-place  { @apply mt-0.5 text-xs text-forest/55; }
+  .route-arrow  { @apply shrink-0 text-xl text-brass; }
+  .kv-list      { @apply grid gap-x-6 gap-y-4 sm:grid-cols-2; }
+  .kv-key       { @apply text-xs font-semibold uppercase tracking-wider text-forest/50; }
+  .kv-val       { @apply mt-0.5 text-sm font-semibold text-forest; }
+  .inner-table  { @apply w-full text-left text-sm; }
+  .inner-table th { @apply border-b border-forest/10 pb-2 text-xs font-bold uppercase tracking-wider text-forest/50; }
+  .inner-table td { @apply border-b border-forest/5 py-2.5 pr-3; }
+  .inner-table tr:last-child td { @apply border-b-0; }
+
+  /* --- Formulir --- */
+  .form-card    { @apply p-5 sm:p-7; }
+  .form-grid    { @apply grid gap-4 sm:grid-cols-2; }
+  .field-full   { @apply sm:col-span-2; }
+  .section-title{ @apply mb-3 mt-8 border-t border-forest/10 pt-6 font-display text-lg; }
+  .form-actions { @apply mt-8 flex flex-wrap items-center gap-3; }
+  .check-line   { @apply flex items-center gap-2 text-sm font-semibold text-forest; }
+  .items-list   { @apply space-y-3; }
+  .item-row     { @apply rounded-xl border border-forest/10 bg-white p-3 sm:p-4; }
+  .item-row-grid{ @apply grid gap-3 sm:grid-cols-[1fr_7rem_8rem_auto] sm:items-end; }
+  .link-remove  { @apply self-end rounded-lg px-2.5 py-2 text-xs font-bold text-exception hover:bg-exception/10; }
+
+  /* --- Ikon (SVG tertanam) --- */
+  .icon        { @apply h-5 w-5 shrink-0; }
+  .icon-lg     { @apply h-6 w-6; }
+
+  /* --- Kartu angka dashboard --- */
+  .stat-grid   { @apply mt-5 grid grid-cols-2 gap-3 lg:grid-cols-4 lg:gap-4; }
+  .stat-card   { @apply flex flex-col items-start gap-3 p-4 sm:flex-row sm:items-center sm:gap-4 sm:p-5; }
+  .stat-icon   { @apply flex h-12 w-12 shrink-0 items-center justify-center rounded-full; }
+  .stat-icon-total     { @apply bg-forest/8 text-forest; }
+  .stat-icon-transit   { @apply bg-transit/10 text-transit; }
+  .stat-icon-delivered { @apply bg-delivered/10 text-delivered; }
+  .stat-icon-pending   { @apply bg-delay/15 text-[#a8620a]; }
+  .stat-label  { @apply text-xs font-semibold uppercase tracking-wider text-forest/55; }
+  .stat-value  { @apply mt-0.5 font-display text-3xl leading-none text-forest; }
+
+  .recent-list { @apply overflow-hidden; }
+  .recent-row  { @apply flex items-center justify-between gap-3 border-b border-forest/5 px-4 py-3.5 transition last:border-b-0 hover:bg-forest/[0.03] sm:px-5; }
 }
 
 /* ---------- Animasi halaman login ---------- */
@@ -159,5 +284,5 @@ body {
 
 /* Hormati pengguna yang meminta animasi dikurangi */
 @media (prefers-reduced-motion: reduce) {
-  .wave-char, .route-line, .auth-glow, .auth-lead { animation: none !important; }
+  .wave-char, .route-line, .auth-glow, .auth-lead, .auth-ribbon-tag { animation: none !important; }
 }
