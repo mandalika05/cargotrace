@@ -41,5 +41,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('carriers', CarrierController::class)->except('show');
         Route::resource('locations', LocationController::class)->except('show');
         Route::resource('users', UserController::class)->except(['show', 'destroy']);
-    });
+        });
 });
+
+require __DIR__.'/tracking.php';
