@@ -6,6 +6,14 @@ Leaflet and a Sanctum-secured REST API.
 
 > Status: **work in progress** (final project for Web Programming 2). This README grows with every stage.
 
+## Features so far
+
+- Authentication with three roles (admin, operator, customer) and server-side authorization (middleware + Laravel Policy)
+- Shipments with cargo items, created in one database transaction; search, filter, sort and server-side pagination
+- Admin management of carriers, locations and users
+- Dashboard counters computed from the database
+- Responsive UI (sidebar on desktop, hamburger menu and card lists on mobile)
+
 ## Problem
 
 Shipment information is scattered, customers cannot see where their cargo is, and delays or
@@ -58,5 +66,7 @@ php artisan test
 ## Attribution
 
 Laravel, Tailwind CSS, Leaflet, OpenStreetMap, Chart.js and Laravel Sanctum are open-source
-libraries used under their respective licenses. Application code is written for this project.
+libraries used under their respective licenses. Icons follow the [Feather Icons](https://feathericons.com)
+set (MIT license, Copyright Cole Bemis) and are embedded as inline SVG. Fonts: Plus Jakarta Sans and
+Fraunces (SIL Open Font License) via Google Fonts. Application code is written for this project.
 Parts of it were developed with AI assistance and reviewed and understood by the author.
