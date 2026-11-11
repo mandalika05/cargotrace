@@ -62,7 +62,7 @@
 
         <div class="auth-bottom">
             {{-- Ilustrasi rute: Singapore -> Rotterdam, paket bergerak sepanjang garis --}}
-            <svg class="auth-route" viewBox="0 0 620 260" fill="none" aria-hidden="true">
+            <svg class="auth-route" viewBox="-30 0 680 260" fill="none" aria-hidden="true">
                 <path d="{{ $routePath }}" class="route-line" stroke="#d9b26a" stroke-width="2" stroke-linecap="round" opacity=".85"/>
 
                 {{-- Titik asal --}}
@@ -71,7 +71,7 @@
                     <animate attributeName="r" values="6;22;6" dur="2.6s" repeatCount="indefinite"/>
                     <animate attributeName="opacity" values=".7;0;.7" dur="2.6s" repeatCount="indefinite"/>
                 </circle>
-                <text x="40" y="228" fill="#fffefb" fill-opacity=".6" font-size="12" font-weight="700" letter-spacing="1.5" text-anchor="middle">SINGAPORE</text>
+                <text x="16" y="228" fill="#fffefb" fill-opacity=".7" font-size="12" font-weight="700" letter-spacing="1.5" text-anchor="start">SINGAPORE</text>
 
                 {{-- Titik tujuan --}}
                 <circle cx="575" cy="70" r="6" fill="#d9b26a"/>
@@ -79,7 +79,7 @@
                     <animate attributeName="r" values="6;22;6" dur="2.6s" begin="1.3s" repeatCount="indefinite"/>
                     <animate attributeName="opacity" values=".7;0;.7" dur="2.6s" begin="1.3s" repeatCount="indefinite"/>
                 </circle>
-                <text x="575" y="108" fill="#fffefb" fill-opacity=".6" font-size="12" font-weight="700" letter-spacing="1.5" text-anchor="middle">ROTTERDAM</text>
+                <text x="600" y="108" fill="#fffefb" fill-opacity=".7" font-size="12" font-weight="700" letter-spacing="1.5" text-anchor="end">ROTTERDAM</text>
 
                 {{-- Paket yang bergerak --}}
                 <g>
