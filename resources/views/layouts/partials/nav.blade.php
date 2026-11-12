@@ -15,10 +15,13 @@
     $navClass = fn (string $pattern) => 'nav-link'.(request()->routeIs($pattern) ? ' nav-link-active' : '');
 @endphp
 
+<div class="nav-label">Overview</div>
 <a href="{{ route('dashboard') }}" class="{{ $navClass('dashboard') }}"><x-icon name="grid" /> Dashboard</a>
+<div class="nav-label">Operations</div>
 <a href="{{ route('shipments.index') }}" class="{{ $navClass('shipments.*') }}"><x-icon name="package" /> {{ $navUser->isCustomer() ? 'My shipments' : 'Shipments' }}</a>
 
 @if ($navUser->isAdmin())
+    <div class="nav-label">Administration</div>
     <a href="{{ route('carriers.index') }}" class="{{ $navClass('carriers.*') }}"><x-icon name="truck" /> Carriers</a>
     <a href="{{ route('locations.index') }}" class="{{ $navClass('locations.*') }}"><x-icon name="map-pin" /> Locations</a>
     <a href="{{ route('users.index') }}" class="{{ $navClass('users.*') }}"><x-icon name="users" /> Users</a>

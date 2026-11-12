@@ -3,7 +3,7 @@
  BUAT APA : Kerangka halaman SETELAH LOGIN.
             Laptop : sidebar kiri tetap.
             HP     : bar atas + tombol hamburger yang membuka daftar menu.
- CATATAN  : Semua kelas ada di resources/css/app.css. Menu ada di
+ CATATAN  : Gaya ada di resources/css/app.css, polish.css dan auth.css (sidebar, logo, profil). Menu ada di
             layouts/partials/nav.blade.php (satu daftar untuk laptop dan HP).
  CARA PAKAI di halaman:
      @extends('layouts.app')
@@ -19,6 +19,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="theme-color" content="#0f2f2a">
     <title>@yield('title', 'Dashboard') - CargoTrace</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -33,15 +34,53 @@
 
     {{-- ===== Sidebar (laptop) ===== --}}
     <aside class="sidebar">
-        <div class="sidebar-brand">Cargo<span class="brand-accent">Trace</span></div>
+        <div class="sidebar-brand">
+            <x-logo-mark />
+            <span class="brand-word">Cargo<span class="brand-accent">Trace</span></span>
+        </div>
 
         <nav class="nav-list">
             @include('layouts.partials.nav')
         </nav>
 
+
+        {{-- Ilustrasi pelabuhan (SVG tertanam, hanya hiasan): derek, kapal berisi kontainer, air --}}
+        <div class="sidebar-art" aria-hidden="true">
+            <svg viewBox="0 0 220 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g stroke="#7fe8d4" stroke-opacity=".22">
+                    <circle cx="186" cy="26" r="12"/><circle cx="186" cy="26" r="22"/><circle cx="186" cy="26" r="32"/>
+                </g>
+                <circle cx="186" cy="26" r="2.5" fill="#f4b740"/>
+                <g stroke="#7fd1bf" stroke-opacity=".75" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 100V38M48 100V38M20 38H96M20 60L48 38M20 82L48 60"/>
+                    <path d="M76 38V56"/>
+                </g>
+                <rect x="69" y="56" width="14" height="9" rx="1.5" fill="#f4b740"/>
+                <g>
+                    <path d="M62 84H196L186 99H72Z" fill="#b8893b" fill-opacity=".92"/>
+                    <rect x="74" y="73" width="16" height="11" rx="1.5" fill="#14b8a6"/>
+                    <rect x="91" y="73" width="16" height="11" rx="1.5" fill="#f4b740"/>
+                    <rect x="108" y="73" width="16" height="11" rx="1.5" fill="#f0705b"/>
+                    <rect x="125" y="73" width="16" height="11" rx="1.5" fill="#52c47f"/>
+                    <rect x="82" y="62" width="16" height="11" rx="1.5" fill="#52c47f"/>
+                    <rect x="99" y="62" width="16" height="11" rx="1.5" fill="#14b8a6"/>
+                    <rect x="116" y="62" width="16" height="11" rx="1.5" fill="#f4b740"/>
+                    <rect x="150" y="60" width="26" height="24" rx="2" fill="#0a2420" stroke="#f4d58a" stroke-opacity=".7"/>
+                    <path d="M155 68H171M155 74H171" stroke="#f4d58a" stroke-opacity=".6" stroke-linecap="round"/>
+                </g>
+                <path d="M0 102q11-6 22 0t22 0t22 0t22 0t22 0t22 0t22 0t22 0t22 0t22 0" stroke="#14b8a6" stroke-opacity=".7" stroke-width="1.8" stroke-linecap="round"/>
+                <path d="M0 111q11-6 22 0t22 0t22 0t22 0t22 0t22 0t22 0t22 0t22 0t22 0" stroke="#14b8a6" stroke-opacity=".35" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
+        </div>
+
         <div class="sidebar-user">
-            <div class="sidebar-name">{{ $user->name }}</div>
-            <div class="sidebar-role">{{ $user->role }}</div>
+            <div class="profile">
+                <span class="avatar">{{ strtoupper(mb_substr($user->name, 0, 1)) }}</span>
+                <div class="profile-text">
+                    <div class="profile-name">{{ $user->name }}</div>
+                    <span class="profile-role">{{ $user->role }}</span>
+                </div>
+            </div>
             <form method="POST" action="{{ route('logout') }}">
                 @csrf {{-- token anti-CSRF wajib di setiap form POST --}}
                 <button type="submit" class="sidebar-signout"><x-icon name="log-out" /> Sign out</button>
@@ -54,7 +93,10 @@
         {{-- ===== Bar atas + menu hamburger (HP) ===== --}}
         <header class="mobile-head">
             <div class="mobile-bar">
-                <span class="auth-logo">Cargo<span class="brand-accent">Trace</span></span>
+                <span class="mobile-brand">
+                    <x-logo-mark />
+                    <span class="brand-word">Cargo<span class="brand-accent">Trace</span></span>
+                </span>
                 <button type="button" id="menu-toggle" class="menu-button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
                     <x-icon name="menu" class="icon-lg" />
                 </button>
@@ -64,9 +106,12 @@
                     @include('layouts.partials.nav')
                 </nav>
                 <div class="mobile-user">
-                    <div>
-                        <div class="sidebar-name">{{ $user->name }}</div>
-                        <div class="sidebar-role">{{ $user->role }}</div>
+                    <div class="profile">
+                        <span class="avatar">{{ strtoupper(mb_substr($user->name, 0, 1)) }}</span>
+                        <div class="profile-text">
+                            <div class="profile-name">{{ $user->name }}</div>
+                            <span class="profile-role">{{ $user->role }}</span>
+                        </div>
                     </div>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
