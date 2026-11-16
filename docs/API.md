@@ -39,6 +39,8 @@ The API uses the **same Policies, Form Requests and Services as the web app**, s
 | GET | `/attention` | "Needs attention" queue, most serious first |
 | GET / POST / PATCH | `/exceptions`, `/shipments/{id}/exceptions`, `/exceptions/{id}` | status `OPEN -> INVESTIGATING -> RESOLVED`; resolving needs `note` |
 | GET | `/shipments/{id}/weather` | 5-day forecast (current position + destination) from Open-Meteo; `available=false` when offline |
+| GET | `/shipments/{id}/map` | map data: `origin`, `destination`, `points` (tracking points in time order), `current`, `route`, `remaining`; `available=false` when no coordinates exist |
+| GET | `/geocode?q=` | place name to coordinates (Nominatim/OpenStreetMap), staff only, `q` 3-150 chars, cached 24h; `available=false` when the service is unreachable |
 | GET | `/dashboard` | totals, by status, delayed, exception counts |
 | GET / PUT | `/settings/delay` | `delay_low_max_hours`, `delay_medium_max_hours` |
 

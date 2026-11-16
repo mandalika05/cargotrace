@@ -72,6 +72,9 @@
             <div class="progress"><div class="progress-bar" style="width: {{ $shipment->progressPercent() }}%"></div></div>
         </div>
 
+        {{-- Peta rute (P12) --}}
+        @include('shipments.partials.map')
+
         {{-- Timeline tracking --}}
         @include('shipments.partials.tracking')
 

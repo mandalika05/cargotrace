@@ -8,3 +8,8 @@ import '@fontsource/plus-jakarta-sans/latin-600.css';
 import '@fontsource/plus-jakarta-sans/latin-700.css';
 import '@fontsource/plus-jakarta-sans/latin-800.css';
 import '@fontsource/fraunces/latin-600.css';
+
+// Peta (Leaflet) dan geocoding dimuat HANYA di halaman yang memerlukannya (P12),
+// jadi halaman lain tidak ikut membawa kode peta.
+if (document.getElementById('shipment-map')) import('./shipment-map.js');
+if (document.querySelector('[data-geocode]')) import('./geocode.js');

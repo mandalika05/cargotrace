@@ -582,6 +582,58 @@
             },
             "description": "5-day forecast for the current position and destination (Open-Meteo)."
           }
+        },
+        {
+          "name": "Map data",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/shipments/1/map",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "shipments",
+                "1",
+                "map"
+              ]
+            },
+            "description": "Origin, destination and tracking points for the map."
+          }
+        },
+        {
+          "name": "Geocode a place (staff)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/geocode?q=Rotterdam",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "geocode"
+              ],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "Rotterdam"
+                }
+              ]
+            },
+            "description": "Place name to coordinates (Nominatim)."
+          }
         }
       ]
     },

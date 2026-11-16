@@ -1,0 +1,26 @@
+/* ============================================================
+   BUAT APA : Gaya peta shipment (Leaflet) dan tombol geocoding (P12).
+   Marker memakai CSS saja (bulatan berwarna), tanpa gambar.
+   ============================================================ */
+.map-box { position: relative; }
+.map-canvas { height: 22rem; border-radius: 0.85rem; overflow: hidden; border: 1px solid #cfe6d9; z-index: 0; }
+.map-message { margin: 0; padding: 2.2rem 1rem; text-align: center; border-radius: 0.85rem; background: rgba(15, 47, 42, 0.04); color: rgba(15, 47, 42, 0.65); font-size: 0.88rem; }
+.map-note { margin: 0.6rem 0 0; font-size: 0.76rem; color: #7a4705; }
+.map-pin-wrap { background: transparent; border: 0; }
+.map-pin { display: inline-block; width: 1rem; height: 1rem; border-radius: 9999px; border: 3px solid #ffffff; box-shadow: 0 1px 5px rgba(15, 47, 42, 0.45); vertical-align: middle; }
+.map-pin-origin { background: #0e6b5c; }
+.map-pin-destination { background: #c0392b; }
+.map-pin-event { background: #1f8a70; width: 0.8rem; height: 0.8rem; }
+.map-pin-current { background: #f4b740; width: 1.15rem; height: 1.15rem; }
+.map-legend { display: flex; flex-wrap: wrap; gap: 0.4rem 1rem; margin-top: 0.7rem; font-size: 0.74rem; color: rgba(15, 47, 42, 0.7); }
+.map-legend-item .map-pin { width: 0.7rem; height: 0.7rem; border-width: 2px; margin-right: 0.15rem; }
+.map-popup-title { font-weight: 800; color: #0f2f2a; }
+.map-popup-place { margin-top: 0.15rem; font-size: 0.82rem; }
+.map-popup-time { margin-top: 0.15rem; font-size: 0.74rem; color: rgba(15, 47, 42, 0.6); }
+.map-popup-desc { margin-top: 0.3rem; font-size: 0.78rem; }
+
+/* Tombol dan hasil geocoding di form */
+.geo-box { margin-top: 0.6rem; }
+.geo-note { margin: 0.5rem 0 0; font-size: 0.78rem; color: rgba(15, 47, 42, 0.65); }
+.geo-result { display: block; width: 100%; margin-top: 0.4rem; padding: 0.5rem 0.7rem; text-align: left; font-size: 0.78rem; line-height: 1.35; color: #0f2f2a; background: rgba(31, 138, 112, 0.08); border: 1px solid rgba(31, 138, 112, 0.25); border-radius: 0.6rem; cursor: pointer; }
+.geo-result:hover { background: rgba(31, 138, 112, 0.18); }

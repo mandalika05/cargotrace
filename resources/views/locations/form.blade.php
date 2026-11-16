@@ -43,6 +43,11 @@
             @error('longitude') <p class="field-error">{{ $message }}</p> @enderror
         </div>
         <p class="form-hint field-full">Coordinates are optional now. They are used to draw the map.</p>
+        {{-- Cari koordinat dari kota + negara (P12, geocoding) --}}
+        <div class="field-full">
+            <button type="button" class="btn-ghost" data-geocode data-url="{{ route('geocode') }}" data-fields="#city,#country" data-lat="#latitude" data-lng="#longitude" data-results="#geo-location"><x-icon name="search" /> Find coordinates from city and country</button>
+            <div id="geo-location" class="geo-box"></div>
+        </div>
     </div>
 
     <div class="form-actions">

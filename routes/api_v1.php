@@ -41,6 +41,9 @@ Route::prefix('v1')->name('api.')->group(function () {
         // Prakiraan cuaca (posisi terkini + tujuan)
         Route::get('/shipments/{shipment}/weather', [\App\Http\Controllers\WeatherController::class, 'show'])->name('shipments.weather');
 
+        // Data peta (origin, destination, titik tracking)
+        Route::get('/shipments/{shipment}/map', [\App\Http\Controllers\MapController::class, 'show'])->name('shipments.map');
+
         // Delay dan ETA
         Route::get('/shipments/{shipment}/delay', [DelayController::class, 'show'])->name('shipments.delay');
         Route::patch('/shipments/{shipment}/eta', [DelayController::class, 'updateEta'])->name('shipments.eta');
@@ -53,6 +56,7 @@ Route::prefix('v1')->name('api.')->group(function () {
 
         // Khusus staf
         Route::middleware('role:admin,operator')->group(function () {
+            Route::get('/geocode', [\App\Http\Controllers\GeocodeController::class, 'search'])->middleware('throttle:20,1')->name('geocode');
             Route::get('/attention', [DelayController::class, 'attention'])->name('attention');
             Route::get('/carriers', [LookupController::class, 'carriers'])->name('carriers');
             Route::get('/locations', [LookupController::class, 'locations'])->name('locations');

@@ -75,6 +75,12 @@
                 </div>
             </div>
 
+            {{-- Cari koordinat dari nama tempat (P12, geocoding) --}}
+            <div>
+                <button type="button" class="btn-ghost" data-geocode data-url="{{ route('geocode') }}" data-fields="#location_name" data-lat="#latitude" data-lng="#longitude" data-results="#geo-event"><x-icon name="search" /> Find coordinates</button>
+                <div id="geo-event" class="geo-box"></div>
+            </div>
+
             <div>
                 <label for="description" class="field-label">Description</label>
                 <textarea id="description" name="description" rows="3" maxlength="1000" class="field-input" placeholder="What happened?">{{ old('description') }}</textarea>
