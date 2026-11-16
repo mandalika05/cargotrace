@@ -75,6 +75,9 @@
         {{-- Timeline tracking --}}
         @include('shipments.partials.tracking')
 
+        {{-- Exception (P11) --}}
+        @include('shipments.partials.exceptions')
+
         <div class="card panel">
             <h2 class="panel-title">Cargo items</h2>
             <div class="inner-wrap">
@@ -98,6 +101,12 @@
     <div class="detail-side">
 
         @include('shipments.partials.tracking-location')
+
+        {{-- Delay dan ETA (P11) --}}
+        @include('shipments.partials.delay')
+
+        {{-- Prakiraan cuaca (P11) --}}
+        @include('shipments.partials.weather')
 
         <div class="card panel">
             <h2 class="panel-title">Schedule</h2>

@@ -31,10 +31,13 @@ use Illuminate\Validation\ValidationException;
 
 class TrackingService
 {
+    // State machine (peta jalan status) dititipkan otomatis oleh Laravel, dipakai untuk mengecek transisi.
     public function __construct(private readonly ShipmentStateMachine $machine)
     {
     }
 
+    // Menambah satu tracking event ke shipment, di dalam satu transaksi. Aturan yang dijaga ada di komentar atas file.
+    // Kalau event berupa perubahan status, status shipment (dan delivered_at / cancelled_at) ikut diperbarui.
     public function addEvent(Shipment $shipment, array $data, User $actor): TrackingEvent
     {
         return DB::transaction(function () use ($shipment, $data, $actor) {
@@ -54,7 +57,11 @@ class TrackingService
             }
 
             // 3. Tidak mundur dari event terakhir
-            $last = $shipment->trackingEvents()->orderByDesc('occurred_at')->orderByDesc('id')->first();
+            // Penanda exception/ETA tidak ikut dihitung: itu catatan administrasi, bukan
+            // perjalanan fisik, jadi tidak boleh menghalangi event perjalanan berikutnya.
+            $last = $shipment->trackingEvents()
+                ->whereNotIn('event_type', TrackingEvent::MARKER_TYPES)
+                ->orderByDesc('occurred_at')->orderByDesc('id')->first();
             if ($last && $occurredAt->lt($last->occurred_at)) {
                 $this->fail('occurred_at', 'Event time cannot be earlier than the previous event ('.$last->occurred_at->format('d M Y, H:i').').');
             }
@@ -152,6 +159,7 @@ class TrackingService
         });
     }
 
+    // Melempar error validasi untuk satu kolom (web: kembali ke form dengan pesan; API: respons 422).
     private function fail(string $field, string $message): never
     {
         throw ValidationException::withMessages([$field => $message]);

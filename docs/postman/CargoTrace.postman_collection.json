@@ -1,0 +1,859 @@
+{
+  "info": {
+    "name": "CargoTrace API v1",
+    "description": "Run a Login request first: it stores the Bearer token in the collection variable `token`. Demo accounts come from the seeder (password: password).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000/api/v1"
+    },
+    {
+      "key": "token",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "1. Auth",
+      "item": [
+        {
+          "name": "Login as admin",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/auth/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@cargotrace.test\",\n  \"password\": \"password\",\n  \"device_name\": \"postman\"\n}"
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const j = pm.response.json();",
+                  "if (j.token) { pm.collectionVariables.set('token', j.token); }",
+                  "pm.test('login ok', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Login as operator",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/auth/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"operator@cargotrace.test\",\n  \"password\": \"password\",\n  \"device_name\": \"postman\"\n}"
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const j = pm.response.json();",
+                  "if (j.token) { pm.collectionVariables.set('token', j.token); }",
+                  "pm.test('login ok', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Login as customer",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/auth/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"customer@cargotrace.test\",\n  \"password\": \"password\",\n  \"device_name\": \"postman\"\n}"
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const j = pm.response.json();",
+                  "if (j.token) { pm.collectionVariables.set('token', j.token); }",
+                  "pm.test('login ok', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Register (always customer)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/auth/register",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "register"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"New Customer\",\n  \"email\": \"new@example.test\",\n  \"password\": \"password123\",\n  \"password_confirmation\": \"password123\"\n}"
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        },
+        {
+          "name": "Me",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/auth/me",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "me"
+              ]
+            },
+            "description": ""
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/auth/logout",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "logout"
+              ]
+            },
+            "description": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Shipments",
+      "item": [
+        {
+          "name": "List (search, filter, sort, paginate)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/shipments?q=&status=IN_TRANSIT&sort=newest&per_page=10",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "shipments?q=&status=IN_TRANSIT&sort=newest&per_page=10"
+              ]
+            },
+            "description": ""
+          }
+        },
+        {
+          "name": "Show",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/shipments/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "shipments",
+                "1"
+              ]
+            },
+            "description": ""
+          }
+        },
+        {
+          "name": "Create (admin, operator)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/shipments",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "shipments"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer_id\": 3,\n  \"carrier_id\": 1,\n  \"origin_id\": 1,\n  \"destination_id\": 2,\n  \"cargo_type\": \"Electronics\",\n  \"weight_kg\": 1200.5,\n  \"volume_cbm\": 14.25,\n  \"expected_departure_at\": \"2026-12-01T08:00\",\n  \"expected_arrival_at\": \"2026-12-21T08:00\",\n  \"items\": [\n    {\n      \"description\": \"Laptops\",\n      \"quantity\": 100,\n      \"weight_kg\": 300\n    }\n  ]\n}"
+            }
+          }
+        },
+        {
+          "name": "Update (admin, operator)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/shipments/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "shipments",
+                "1"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer_id\": 3,\n  \"carrier_id\": 1,\n  \"origin_id\": 1,\n  \"destination_id\": 2,\n  \"cargo_type\": \"Electronics\",\n  \"weight_kg\": 1200.5,\n  \"volume_cbm\": 14.25,\n  \"expected_departure_at\": \"2026-12-01T08:00\",\n  \"expected_arrival_at\": \"2026-12-21T08:00\",\n  \"items\": [\n    {\n      \"description\": \"Laptops\",\n      \"quantity\": 100,\n      \"weight_kg\": 300\n    }\n  ]\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete (admin)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/shipments/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "shipments",
+                "1"
+              ]
+            },
+            "description": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Tracking",
+      "item": [
+        {
+          "name": "Timeline + current location",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/shipments/1/tracking",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "shipments",
+                "1",
+                "tracking"
+              ]
+            },
+            "description": ""
+          }
+        },
+        {
+          "name": "Add event (admin, operator)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/shipments/1/tracking",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "shipments",
+                "1",
+                "tracking"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"event_type\": \"LOCATION_UPDATE\",\n  \"occurred_at\": \"2026-11-15T10:00:00+07:00\",\n  \"location_name\": \"Colombo, Sri Lanka\",\n  \"latitude\": 6.9271,\n  \"longitude\": 79.8612,\n  \"description\": \"Passing Colombo\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Reopen (admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/shipments/1/reopen",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "shipments",
+                "1",
+                "reopen"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reason\": \"Customer disputes the delivery\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Delay and ETA",
+      "item": [
+        {
+          "name": "Delay assessment with reason",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/shipments/1/delay",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "shipments",
+                "1",
+                "delay"
+              ]
+            },
+            "description": ""
+          }
+        },
+        {
+          "name": "Update ETA (admin, operator)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/shipments/1/eta",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "shipments",
+                "1",
+                "eta"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"estimated_arrival_at\": \"2026-12-24T08:00:00+07:00\",\n  \"reason\": \"Port congestion at Colombo\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Needs attention queue (staff)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/attention",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "attention"
+              ]
+            },
+            "description": ""
+          }
+        },
+        {
+          "name": "Weather forecast",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/shipments/1/weather",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "shipments",
+                "1",
+                "weather"
+              ]
+            },
+            "description": "5-day forecast for the current position and destination (Open-Meteo)."
+          }
+        }
+      ]
+    },
+    {
+      "name": "5. Exceptions",
+      "item": [
+        {
+          "name": "List all",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/exceptions?status=OPEN&severity=HIGH",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "exceptions?status=OPEN&severity=HIGH"
+              ]
+            },
+            "description": ""
+          }
+        },
+        {
+          "name": "List for a shipment",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/shipments/1/exceptions",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "shipments",
+                "1",
+                "exceptions"
+              ]
+            },
+            "description": ""
+          }
+        },
+        {
+          "name": "Report (admin, operator)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/shipments/1/exceptions",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "shipments",
+                "1",
+                "exceptions"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"CUSTOMS_HOLD\",\n  \"severity\": \"HIGH\",\n  \"description\": \"Extra inspection requested\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Investigate",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/exceptions/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "exceptions",
+                "1"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"INVESTIGATING\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Resolve (note required)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/exceptions/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "exceptions",
+                "1"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"RESOLVED\",\n  \"note\": \"Cleared by customs\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "6. Dashboard and settings",
+      "item": [
+        {
+          "name": "Dashboard summary",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/dashboard",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "dashboard"
+              ]
+            },
+            "description": ""
+          }
+        },
+        {
+          "name": "Carriers (staff)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/carriers",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "carriers"
+              ]
+            },
+            "description": ""
+          }
+        },
+        {
+          "name": "Locations (staff)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/locations",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "locations"
+              ]
+            },
+            "description": ""
+          }
+        },
+        {
+          "name": "Delay thresholds",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/settings/delay",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "settings",
+                "delay"
+              ]
+            },
+            "description": ""
+          }
+        },
+        {
+          "name": "Change delay thresholds (admin)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/settings/delay",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "settings",
+                "delay"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"delay_low_max_hours\": 6,\n  \"delay_medium_max_hours\": 24\n}"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

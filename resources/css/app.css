@@ -12,6 +12,7 @@
 @import './tracking.css';
 @import './polish.css';
 @import './auth.css';
+@import './exceptions.css';
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';

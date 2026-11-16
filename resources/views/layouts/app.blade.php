@@ -21,9 +21,9 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="theme-color" content="#0f2f2a">
     <title>@yield('title', 'Dashboard') - CargoTrace</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    {{-- Font (Plus Jakarta Sans + Fraunces) dipasang lewat npm (@fontsource) dan dimuat dari resources/js/app.js: tidak ada permintaan ke Google, jadi tetap tampil offline. --}}
+    <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
+    <link rel="icon" href="{{ asset('favicon.ico') }}" sizes="any">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('head')
 </head>

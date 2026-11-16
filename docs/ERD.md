@@ -76,11 +76,15 @@ erDiagram
     SHIPMENT_EXCEPTIONS {
         bigint id PK
         bigint shipment_id FK
-        string type
-        string severity
-        string status
+        string type "CUSTOMS_HOLD|WEATHER_DELAY|PORT_CONGESTION|DAMAGED|MISROUTED|DOCUMENTATION_ISSUE"
+        string severity "LOW|MEDIUM|HIGH"
+        string status "OPEN|INVESTIGATING|RESOLVED"
+        text description
         datetime detected_at
         datetime resolved_at
+        text resolution_note
+        bigint reported_by FK
+        bigint resolved_by FK
     }
     AUDIT_LOGS {
         bigint id PK
@@ -105,7 +109,8 @@ erDiagram
 - **Location → Shipments (1:N twice).** Origin and destination are separate foreign keys to the same table.
 - **Shipment → Items (1:N, at least one).** Items are created together with the shipment inside one database transaction.
 - **Shipment → Tracking events (1:N).** Append-only history; no update or delete.
-- **Shipment → Exceptions (1:N).** A shipment can have several exceptions over its life.
+- **Shipment → Exceptions (1:N).** A shipment can have several exceptions over its life. Each exception is `OPEN`, `INVESTIGATING` or `RESOLVED`; `RESOLVED` is final and needs a resolution note. `detected_at` and `resolved_at` give the detection and resolution times.
+- **Settings (key-value).** `delay_low_max_hours` and `delay_medium_max_hours` hold the delay thresholds, so an Admin can change them without touching code.
 - **Soft delete** only on `shipments`, because history must survive an Admin delete. Other tables do not need it.
 - **Indexes** on `shipments.status`, `shipments.customer_id`, `shipments.expected_arrival_at`, `tracking_events(shipment_id, occurred_at)`, `users.role`.
 - **Unique** `shipments.shipment_number`, `carriers.code`, `users.email`, `settings.key`.

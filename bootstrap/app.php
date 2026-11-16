@@ -31,4 +31,11 @@ return Application::configure(basePath: dirname(__DIR__))
         $exceptions->shouldRenderJsonWhen(
             fn ($request, $e) => $request->is('api/*') || $request->expectsJson()
         );
+
+        // P11: jawaban 404 API yang rapi (tanpa membocorkan nama kelas model)
+        $exceptions->render(function (\Symfony\Component\HttpKernel\Exception\NotFoundHttpException $e, $request) {
+            if ($request->is('api/*')) {
+                return response()->json(['message' => 'Resource not found.'], 404);
+            }
+        });
     })->create();

@@ -54,6 +54,7 @@
         <div class="filter-actions">
             <button type="submit" class="btn-primary"><x-icon name="search" /> Apply</button>
             <a href="{{ route('shipments.index') }}" class="btn-ghost">Reset</a>
+            <a href="{{ route('exports.shipments', request()->query()) }}" class="btn-ghost"><x-icon name="file-text" /> Export CSV</a>
         </div>
     </form>
 
@@ -67,7 +68,7 @@
             {{-- ===== Tabel (laptop) ===== --}}
             <div class="only-desktop">
                 <div class="table-wrap">
-                    <table class="data-table">
+                    <table class="data-table table-fit">
                         <thead>
                             <tr>
                                 <th>Shipment</th>
@@ -91,7 +92,11 @@
                                     <td>{{ $shipment->carrier->name }}</td>
                                     <td>{{ $shipment->estimated_arrival_at?->format('d M Y') }}
                                         <div class="cell-sub">{{ $shipment->estimated_arrival_at?->format('H:i') }}</div></td>
-                                    <td><span class="chip {{ $shipment->statusChip() }}">{{ $shipment->statusLabel() }}</span></td>
+                                    <td class="cell-status">
+                                        <span class="chip {{ $shipment->statusChip() }}">{{ $shipment->statusLabel() }}</span>
+                                        @php $delay = $shipment->delay(); @endphp
+                                        @if ($delay->isDelayed()) <div style="margin-top:.35rem"><span class="chip {{ $delay->chipClass() }}">{{ $delay->label() }}</span></div> @endif
+                                    </td>
                                     <td class="progress-cell"><div class="progress"><div class="progress-bar" style="width: {{ $shipment->progressPercent() }}%"></div></div></td>
                                 </tr>
                             @endforeach
@@ -109,6 +114,8 @@
                             <span class="chip {{ $shipment->statusChip() }}">{{ $shipment->statusLabel() }}</span>
                         </div>
                         <div class="item-card-route">{{ $shipment->origin->city }} <span>&rarr;</span> {{ $shipment->destination->city }}</div>
+                        @php $delay = $shipment->delay(); @endphp
+                        @if ($delay->isDelayed()) <div style="margin-top:.5rem"><span class="chip {{ $delay->chipClass() }}">{{ $delay->label() }}</span></div> @endif
                         <div class="progress"><div class="progress-bar" style="width: {{ $shipment->progressPercent() }}%"></div></div>
                         <div class="meta-grid">
                             <div><div class="meta-label">Carrier</div><div class="meta-value">{{ $shipment->carrier->name }}</div></div>

@@ -14,6 +14,8 @@ use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
+    // Mengisi data demo: 5 akun, lalu carrier, lokasi, shipment, riwayat tracking, pengaturan delay, dan exception.
+    // Urutan di daftar call() penting: exception butuh shipment dan tracking yang sudah ada.
     public function run(): void
     {
         $akunDemo = [
@@ -35,6 +37,8 @@ class DatabaseSeeder extends Seeder
             LocationSeeder::class,
             ShipmentSeeder::class,
             TrackingEventSeeder::class,
+            SettingSeeder::class,
+            ExceptionSeeder::class,
         ]);
     }
 }

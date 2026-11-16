@@ -5,6 +5,10 @@
         "build": "vite build",
         "dev": "vite"
     },
+    "dependencies": {
+        "@fontsource/fraunces": "^5.1.0",
+        "@fontsource/plus-jakarta-sans": "^5.1.0"
+    },
     "devDependencies": {
         "@tailwindcss/vite": "^4.0.0",
         "axios": "^1.7.4",

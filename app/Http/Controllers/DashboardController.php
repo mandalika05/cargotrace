@@ -12,12 +12,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Shipment;
+use App\Services\AttentionService;
+use App\Services\ExceptionService;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class DashboardController extends Controller
 {
-    public function __invoke(Request $request): View
+    public function __invoke(Request $request, ExceptionService $exceptions, AttentionService $attention): View
     {
         $user = $request->user();
 
@@ -41,7 +43,12 @@ class DashboardController extends Controller
                 'in_transit' => (int) (($counts['IN_TRANSIT'] ?? 0) + ($counts['PICKED_UP'] ?? 0)),
                 'delivered' => (int) ($counts['DELIVERED'] ?? 0),
                 'pending' => (int) (($counts['CREATED'] ?? 0) + ($counts['BOOKED'] ?? 0)),
+                // P11: keterlambatan (aturan EtaService, dihitung di database) dan exception belum selesai
+                'delayed' => (clone $base)->delayed()->count(),
+                'open_exceptions' => $exceptions->summary($user)['unresolved'],
             ],
+            // P11: lima shipment paling gawat (hanya staf; customer tidak melihat antrean)
+            'attention' => $user->isCustomer() ? collect() : $attention->queue(5),
             'recent' => $recent,
         ]);
     }

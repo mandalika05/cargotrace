@@ -45,3 +45,5 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/tracking.php';
+require __DIR__.'/exceptions.php';
+require __DIR__.'/extras.php';

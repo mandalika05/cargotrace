@@ -68,5 +68,5 @@ php artisan test
 Laravel, Tailwind CSS, Leaflet, OpenStreetMap, Chart.js and Laravel Sanctum are open-source
 libraries used under their respective licenses. Icons follow the [Feather Icons](https://feathericons.com)
 set (MIT license, Copyright Cole Bemis) and are embedded as inline SVG. Fonts: Plus Jakarta Sans and
-Fraunces (SIL Open Font License) via Google Fonts. Application code is written for this project.
+Fraunces (SIL Open Font License), self-hosted through the `@fontsource` npm packages (no request to Google Fonts, so they also work offline). Application code is written for this project.
 Parts of it were developed with AI assistance and reviewed and understood by the author.

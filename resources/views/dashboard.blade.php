@@ -22,7 +22,7 @@
     </div>
 
     {{-- ===== Kartu angka ===== --}}
-    <div class="stat-grid">
+    <div class="stat-grid stat-grid-6">
         <div class="card stat-card">
             <div class="stat-icon stat-icon-total"><x-icon name="package" class="icon-lg" /></div>
             <div><div class="stat-label">Total shipments</div><div class="stat-value">{{ number_format($stats['total']) }}</div></div>
@@ -39,7 +39,41 @@
             <div class="stat-icon stat-icon-pending"><x-icon name="clock" class="icon-lg" /></div>
             <div><div class="stat-label">Awaiting pickup</div><div class="stat-value">{{ number_format($stats['pending']) }}</div></div>
         </div>
+        <div class="card stat-card">
+            <div class="stat-icon stat-icon-delay"><x-icon name="clock" class="icon-lg" /></div>
+            <div><div class="stat-label">Delayed</div><div class="stat-value">{{ number_format($stats['delayed']) }}</div></div>
+        </div>
+        <div class="card stat-card">
+            <div class="stat-icon stat-icon-exception"><x-icon name="alert-triangle" class="icon-lg" /></div>
+            <div><div class="stat-label">Open exceptions</div><div class="stat-value">{{ number_format($stats['open_exceptions']) }}</div></div>
+        </div>
     </div>
+
+    {{-- ===== Needs attention (staf) ===== --}}
+    @unless (auth()->user()->isCustomer())
+        <div class="page-body">
+            <h2 class="panel-title">Needs attention</h2>
+            @if ($attention->isEmpty())
+                <div class="empty-state"><p class="empty-title">All clear</p><p>No delayed shipment or open exception right now.</p></div>
+            @else
+                <div class="attn-list">
+                    @foreach ($attention as $entry)
+                        @php $shipment = $entry['shipment']; $p = strtolower($entry['priority']); @endphp
+                        <a href="{{ route('shipments.show', $shipment) }}" class="attn-row attn-{{ $p }}">
+                            <div><span class="attn-rank attn-rank-{{ $p }}">{{ $entry['priority'] }}</span></div>
+                            <div>
+                                <div class="attn-title">{{ $shipment->shipment_number }}</div>
+                                <div class="attn-route">{{ $shipment->origin->city }} &rarr; {{ $shipment->destination->city }} &middot; {{ $shipment->customer->name }}</div>
+                                <ul class="attn-reasons">@foreach ($entry['reasons'] as $reason) <li>{{ $reason }}</li> @endforeach</ul>
+                            </div>
+                            <div class="attn-score">Score<strong>{{ $entry['score'] }}</strong></div>
+                        </a>
+                    @endforeach
+                </div>
+                <p class="cell-sub" style="margin-top:.75rem"><a href="{{ route('attention.index') }}" class="link-accent">See the full queue &rarr;</a></p>
+            @endif
+        </div>
+    @endunless
 
     {{-- ===== Shipment terbaru ===== --}}
     <div class="page-body">

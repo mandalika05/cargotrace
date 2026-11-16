@@ -1,0 +1,154 @@
+/*
+ * ============================================================
+ * BUAT APA : Gaya khusus P11: kartu Delay & ETA, panel exception, antrean
+ *            "Needs attention", Settings, dan dua kartu angka tambahan di dashboard.
+ * DIPISAH agar app.css, polish.css dan tracking.css yang sudah final tidak diubah.
+ * Dimuat lewat SATU baris di app.css:  @import './exceptions.css';
+ * CSS biasa (tanpa @apply) dengan palet yang sama:
+ *   forest #0f2f2a | jade #1f8a70 | aqua #14b8a6 | sun #f4b740 | brass #b8893b
+ *   transit #0e7c86 | delay #e08a1e | exception #c0392b | delivered #2e9e5b
+ * ============================================================
+ */
+
+/* ----- Kartu angka tambahan di dashboard (6 kartu: 2 kolom di HP, 3 di laptop) ----- */
+@media (min-width: 64rem) { .stat-grid-6 { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.stat-grid-6 .stat-card:nth-child(5) { background: linear-gradient(135deg, #ffffff 0%, #fbe3d0 100%); }
+.stat-grid-6 .stat-card:nth-child(6) { background: linear-gradient(135deg, #ffffff 0%, #f8d9d4 100%); }
+.stat-icon-delay     { background: linear-gradient(135deg, #e08a1e, #f4b740); color: #4a2f00; }
+.stat-icon-exception { background: linear-gradient(135deg, #c0392b, #e0624f); color: #ffffff; }
+
+/* ----- Ringkasan di halaman Exceptions (3 kartu) ----- */
+.stat-grid-3 { grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr)); }
+.stat-grid-3 .stat-card:nth-child(1) { background: linear-gradient(135deg, #ffffff 0%, #f8d9d4 100%); }
+.stat-grid-3 .stat-card:nth-child(2) { background: linear-gradient(135deg, #ffffff 0%, #cdeeec 100%); }
+.stat-grid-3 .stat-card:nth-child(3) { background: linear-gradient(135deg, #ffffff 0%, #d3f0de 100%); }
+
+/* ----- Kartu Delay & ETA ----- */
+.delay-head { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem 0.9rem; }
+.delay-big { font-family: 'Fraunces', Georgia, serif; font-size: 1.5rem; line-height: 1; color: #0f2f2a; }
+.delay-big-late { color: #a8620a; }
+.delay-big-high { color: #c0392b; }
+.delay-reason {
+  margin: 0.85rem 0 0; padding: 0.8rem 1rem; border-radius: 0.75rem; font-size: 0.85rem; line-height: 1.55;
+  background: rgba(15, 47, 42, 0.04); border-left: 3px solid #14b8a6; color: rgba(15, 47, 42, 0.8);
+}
+.delay-reason-late { border-left-color: #e08a1e; background: rgba(224, 138, 30, 0.08); }
+.delay-reason-high { border-left-color: #c0392b; background: rgba(192, 57, 43, 0.07); }
+.delay-values { margin-top: 1rem; }
+
+/* ----- Lipatan (form yang bisa dibuka-tutup) ----- */
+.fold { margin-top: 1rem; border: 1px dashed rgba(31, 138, 112, 0.4); border-radius: 0.85rem; background: rgba(230, 243, 236, 0.45); }
+.fold > summary {
+  cursor: pointer; list-style: none; padding: 0.7rem 1rem; font-size: 0.85rem; font-weight: 700; color: #0f4a3e;
+  display: flex; align-items: center; gap: 0.5rem;
+}
+.fold > summary::-webkit-details-marker { display: none; }
+.fold > summary::after { content: '+'; margin-left: auto; font-size: 1.1rem; color: #1f8a70; }
+.fold[open] > summary::after { content: '\2212'; }
+.fold-body { padding: 0 1rem 1rem; }
+.fold-inline { margin-top: 0.6rem; }
+
+/* ----- Panel exception di halaman detail shipment ----- */
+.exc-list { display: grid; gap: 0.85rem; }
+.exc-card {
+  padding: 0.95rem 1.05rem; border-radius: 0.9rem; background: #ffffff;
+  border: 1px solid rgba(15, 47, 42, 0.1); border-left: 4px solid #e08a1e;
+}
+.exc-card-high { border-left-color: #c0392b; }
+.exc-card-low { border-left-color: #b8893b; }
+.exc-card-resolved { border-left-color: #2e9e5b; background: rgba(46, 158, 91, 0.04); }
+.exc-head { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem 0.6rem; }
+.exc-title { font-weight: 800; color: #0f2f2a; }
+.exc-meta { margin-top: 0.35rem; font-size: 0.76rem; color: rgba(15, 47, 42, 0.55); }
+.exc-desc { margin-top: 0.45rem; font-size: 0.88rem; line-height: 1.5; color: rgba(15, 47, 42, 0.78); }
+.exc-resolution {
+  margin-top: 0.55rem; padding: 0.55rem 0.8rem; border-radius: 0.6rem; font-size: 0.84rem;
+  background: rgba(46, 158, 91, 0.1); color: #17653a;
+}
+.exc-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.7rem; align-items: flex-start; }
+.exc-actions form { margin: 0; }
+.exc-empty { font-size: 0.88rem; color: rgba(15, 47, 42, 0.6); }
+
+/* ----- Antrean Needs attention ----- */
+.attn-list { display: grid; gap: 0.85rem; }
+.attn-row {
+  display: grid; gap: 0.9rem; padding: 1rem 1.15rem; border-radius: 1rem; background: #ffffff; color: inherit;
+  border: 1px solid rgba(15, 47, 42, 0.1); border-left: 5px solid #e08a1e; text-decoration: none;
+  box-shadow: 0 8px 24px rgba(15, 47, 42, 0.06); transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.attn-row:hover { transform: translateY(-2px); box-shadow: 0 14px 30px rgba(15, 47, 42, 0.11); }
+@media (min-width: 40rem) { .attn-row { grid-template-columns: 6.5rem 1fr auto; align-items: center; } }
+.attn-critical { border-left-color: #c0392b; }
+.attn-high     { border-left-color: #e08a1e; }
+.attn-watch    { border-left-color: #14b8a6; }
+.attn-rank {
+  display: inline-flex; align-items: center; justify-content: center; padding: 0.3rem 0.7rem; border-radius: 9999px;
+  font-size: 0.7rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; width: fit-content;
+}
+.attn-rank-critical { background: #fbd9d3; color: #a5301f; }
+.attn-rank-high     { background: #fde7c2; color: #9a5a06; }
+.attn-rank-watch    { background: #d3f1f0; color: #09616b; }
+.attn-title { font-weight: 800; color: #0f2f2a; }
+.attn-route { margin-top: 0.15rem; font-size: 0.85rem; color: rgba(15, 47, 42, 0.7); }
+.attn-reasons { margin: 0.5rem 0 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.attn-reasons li {
+  padding: 0.2rem 0.6rem; border-radius: 9999px; font-size: 0.74rem; font-weight: 600;
+  background: rgba(15, 47, 42, 0.06); color: rgba(15, 47, 42, 0.75);
+}
+.attn-score { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: rgba(15, 47, 42, 0.45); }
+.attn-score strong { display: block; font-family: 'Fraunces', Georgia, serif; font-size: 1.6rem; letter-spacing: 0; color: #0f2f2a; line-height: 1.1; }
+
+/* ----- Settings ----- */
+.rule-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+.rule-table th { text-align: left; padding: 0.5rem 0.6rem; font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; color: rgba(15, 47, 42, 0.5); border-bottom: 1px solid rgba(15, 47, 42, 0.1); }
+.rule-table td { padding: 0.6rem; border-bottom: 1px solid rgba(15, 47, 42, 0.06); }
+.rule-table tr:last-child td { border-bottom: 0; }
+
+/* ----- Kartu cuaca (detail shipment) ----- */
+.wx-advice { margin: 0 0 0.9rem; padding: 0.7rem 0.9rem; border-radius: 0.7rem; font-size: 0.84rem; line-height: 1.5; background: rgba(224, 138, 30, 0.12); border-left: 3px solid #e08a1e; color: #7a4705; }
+.wx-point + .wx-point { margin-top: 1rem; }
+.wx-point-title { font-weight: 800; font-size: 0.86rem; color: #0f2f2a; margin-bottom: 0.4rem; }
+.wx-days { display: grid; gap: 0.4rem; }
+.wx-day { display: grid; grid-template-columns: 4.6rem 1.6rem 1fr auto; align-items: center; gap: 0.5rem; padding: 0.45rem 0.6rem; border-radius: 0.6rem; background: rgba(15, 47, 42, 0.04); }
+.wx-date { font-size: 0.74rem; font-weight: 700; color: rgba(15, 47, 42, 0.7); }
+.wx-icon { font-size: 1.15rem; text-align: center; }
+.wx-sum { font-size: 0.82rem; font-weight: 700; color: #0f2f2a; }
+.wx-meta { font-size: 0.7rem; color: rgba(15, 47, 42, 0.55); }
+.wx-credit { margin: 0.9rem 0 0; font-size: 0.68rem; color: rgba(15, 47, 42, 0.45); }
+
+/* ----- Halaman lacak publik ----- */
+.pub-wrap { min-height: 100vh; background: linear-gradient(180deg, #e6f3ec 0%, #f6fbf8 60%); }
+.pub-head { display: flex; align-items: center; justify-content: space-between; max-width: 46rem; margin: 0 auto; padding: 1.1rem 1rem; }
+.pub-brand { display: inline-flex; align-items: center; gap: 0.6rem; text-decoration: none; color: #0f2f2a; font-weight: 800; font-size: 1.15rem; }
+.pub-brand .logo-mark { width: 2.2rem; height: 2.2rem; }
+.pub-main { max-width: 46rem; margin: 0 auto; padding: 1rem 1rem 3rem; }
+.pub-title { font-family: 'Fraunces', Georgia, serif; font-size: 2rem; line-height: 1.15; color: #0f2f2a; margin: 0.5rem 0 0.3rem; }
+.pub-lead { margin: 0 0 1.25rem; color: rgba(15, 47, 42, 0.7); }
+.pub-form { padding: 1.1rem; }
+.pub-row { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+.pub-row .field-input { flex: 1 1 14rem; }
+.pub-result { margin-top: 1.25rem; }
+.pub-result-head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.75rem; }
+.pub-number { font-family: 'Fraunces', Georgia, serif; font-size: 1.35rem; color: #0f2f2a; }
+.pub-route { margin-top: 0.2rem; font-size: 0.9rem; color: rgba(15, 47, 42, 0.7); }
+.pub-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: flex-start; }
+.pub-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr)); gap: 0.75rem; margin: 1rem 0 0; }
+.pub-facts dt { font-size: 0.7rem; letter-spacing: 0.06em; text-transform: uppercase; color: rgba(15, 47, 42, 0.5); }
+.pub-facts dd { margin: 0.15rem 0 0; font-weight: 700; color: #0f2f2a; }
+.pub-steps { list-style: none; margin: 0.5rem 0 0; padding: 0; }
+.pub-steps li { position: relative; display: flex; gap: 0.8rem; padding: 0 0 1.1rem; }
+.pub-steps li:not(:last-child)::before { content: ''; position: absolute; left: 0.43rem; top: 1.1rem; bottom: 0; width: 2px; background: rgba(31, 138, 112, 0.25); }
+.pub-dot { flex: none; width: 0.9rem; height: 0.9rem; margin-top: 0.2rem; border-radius: 9999px; background: #1f8a70; box-shadow: 0 0 0 4px rgba(31, 138, 112, 0.15); }
+.pub-step-title { font-weight: 700; color: #0f2f2a; }
+.pub-step-place { font-weight: 500; color: rgba(15, 47, 42, 0.7); }
+.pub-step-time { font-size: 0.78rem; color: rgba(15, 47, 42, 0.55); }
+
+/* ----- Tabel muat di layar (tidak terpotong): teks panjang boleh turun baris,
+         kolom penting (nomor, status, ETA) tetap satu baris ----- */
+.data-table.table-fit { min-width: 0; width: 100%; }
+.data-table.table-fit th, .data-table.table-fit td { padding-left: 0.75rem; padding-right: 0.75rem; }
+.data-table.table-fit td { white-space: normal; }
+.data-table.table-fit td:first-child,
+.data-table.table-fit td.cell-status { white-space: nowrap; }
+.data-table.table-fit td.cell-status .chip { max-width: none; }
+.data-table.table-fit .progress-cell { width: 5.5rem; min-width: 4.5rem; }
