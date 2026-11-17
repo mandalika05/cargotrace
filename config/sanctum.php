@@ -50,7 +50,8 @@ return [
     |
     */
 
-    'expiration' => null,
+    // P14: token API kedaluwarsa (menit). Default 7 hari = 10080. Isi SANCTUM_TOKEN_EXPIRATION di .env untuk mengubah.
+    'expiration' => env('SANCTUM_TOKEN_EXPIRATION', 10080),
 
     /*
     |--------------------------------------------------------------------------

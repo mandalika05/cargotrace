@@ -21,6 +21,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        // P14: header keamanan di semua respons (web dan API)
+        $middleware->append(\App\Http\Middleware\SecurityHeaders::class);
+
         // Nama pendek 'role' -> dipakai di route: ->middleware('role:admin,operator')
         $middleware->alias([
             'role' => \App\Http\Middleware\RoleMiddleware::class,
