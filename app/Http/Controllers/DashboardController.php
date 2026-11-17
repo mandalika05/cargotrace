@@ -13,13 +13,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Shipment;
 use App\Services\AttentionService;
+use App\Services\DashboardService;
 use App\Services\ExceptionService;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class DashboardController extends Controller
 {
-    public function __invoke(Request $request, ExceptionService $exceptions, AttentionService $attention): View
+    public function __invoke(Request $request, ExceptionService $exceptions, AttentionService $attention, DashboardService $dashboard): View
     {
         $user = $request->user();
 
@@ -32,7 +33,7 @@ class DashboardController extends Controller
         $counts = (clone $base)->selectRaw('status, count(*) as total')->groupBy('status')->pluck('total', 'status');
 
         $recent = (clone $base)
-            ->with(['origin:id,city', 'destination:id,city'])
+            ->with(['origin:id,city', 'destination:id,city', 'customer:id,name', 'carrier:id,name'])
             ->latest('id')
             ->limit(5)
             ->get();
@@ -50,6 +51,8 @@ class DashboardController extends Controller
             // P11: lima shipment paling gawat (hanya staf; customer tidak melihat antrean)
             'attention' => $user->isCustomer() ? collect() : $attention->queue(5),
             'recent' => $recent,
+            // P13: KPI (on-time, delay rate, exception rate, ...) dan data grafik
+            'insights' => $dashboard->build($user),
         ]);
     }
 }

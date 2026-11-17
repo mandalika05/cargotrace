@@ -174,10 +174,15 @@ class ExceptionWebTest extends TestCase
         $high = ShipmentException::factory()->high()->create(['type' => 'CUSTOMS_HOLD']);
         $low = ShipmentException::factory()->create(['type' => 'DAMAGED', 'severity' => 'LOW']);
 
-        $this->actingAs($this->operator)->get(route('exceptions.index', ['severity' => 'HIGH']))
+        // Dicek lewat data daftar (bukan teks seluruh halaman): dropdown lonceng (P13.3) juga
+        // memuat nomor shipment dari notifikasi, jadi assertDontSee pada halaman penuh akan salah.
+        $response = $this->actingAs($this->operator)->get(route('exceptions.index', ['severity' => 'HIGH']))
             ->assertOk()
-            ->assertSee($high->shipment->shipment_number)
-            ->assertDontSee($low->shipment->shipment_number);
+            ->assertSee($high->shipment->shipment_number);
+
+        $ids = $response->viewData('exceptions')->pluck('id')->all();
+        $this->assertContains($high->id, $ids);
+        $this->assertNotContains($low->id, $ids);
     }
 
     // ---------- ETA ----------

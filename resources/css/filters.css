@@ -1,0 +1,11 @@
+/* ============================================================
+   BUAT APA : Gaya filter lanjutan di daftar shipment (P13.2): "More filters" + pesan error.
+   ============================================================ */
+.filter-more { margin-top: 0.9rem; }
+.filter-more > summary { display: inline-flex; align-items: center; gap: 0.4rem; cursor: pointer; font-size: 0.85rem; font-weight: 800; color: #1f8a70; list-style: none; }
+.filter-more > summary::-webkit-details-marker { display: none; }
+.filter-more > summary::before { content: '+'; display: inline-grid; place-items: center; width: 1.2rem; height: 1.2rem; border-radius: 9999px; background: rgba(31, 138, 112, 0.14); font-weight: 800; }
+.filter-more[open] > summary::before { content: '\2212'; }
+.filter-grid-more { margin-top: 0.75rem; }
+@media (min-width: 64rem) { .filter-grid-more { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.filter-errors { margin: 0.9rem 0 0; padding: 0.6rem 0.9rem 0.6rem 1.8rem; border-radius: 0.7rem; background: #fdecea; color: #8a2b20; font-size: 0.84rem; }

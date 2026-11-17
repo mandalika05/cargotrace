@@ -48,3 +48,4 @@ require __DIR__.'/tracking.php';
 require __DIR__.'/exceptions.php';
 require __DIR__.'/extras.php';
 require __DIR__.'/map.php';
+require __DIR__.'/notifications.php';

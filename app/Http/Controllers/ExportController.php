@@ -11,6 +11,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ShipmentFilterRequest;
 use App\Models\Shipment;
 use App\Services\ShipmentService;
 use Illuminate\Http\Request;
@@ -25,12 +26,12 @@ class ExportController extends Controller
     {
     }
 
-    public function shipments(Request $request): StreamedResponse
+    public function shipments(ShipmentFilterRequest $request): StreamedResponse
     {
         Gate::authorize('viewAny', Shipment::class);
 
         $rows = $this->shipments
-            ->paginate($request->user(), $request->only(['q', 'status', 'carrier_id', 'sort']), self::MAX_ROWS)
+            ->paginate($request->user(), $request->validated(), self::MAX_ROWS)
             ->items();
 
         $filename = 'cargotrace-shipments-'.now()->format('Ymd-His').'.csv';

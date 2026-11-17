@@ -28,7 +28,12 @@
     @stack('head')
 </head>
 <body>
-@php $user = auth()->user(); @endphp
+@php
+    $user = auth()->user();
+    // P13.3: jumlah notifikasi belum dibaca (lonceng) + 5 notifikasi terbaru untuk dropdown
+    $unreadCount = $user->unreadNotifications()->count();
+    $recentNotifications = $user->notifications()->limit(5)->get();
+@endphp
 
 <div class="app-shell">
 
@@ -97,9 +102,16 @@
                     <x-logo-mark />
                     <span class="brand-word">Cargo<span class="brand-accent">Trace</span></span>
                 </span>
-                <button type="button" id="menu-toggle" class="menu-button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
-                    <x-icon name="menu" class="icon-lg" />
-                </button>
+                <div class="mobile-actions">
+                    {{-- P13.3: lonceng notifikasi di HP (langsung ke halaman Notifications) --}}
+                    <a href="{{ route('notifications.index') }}" class="menu-button bell-mobile" aria-label="Notifications">
+                        <x-icon name="bell" class="icon-lg" />
+                        @if ($unreadCount > 0) <span class="bell-badge">{{ $unreadCount > 99 ? '99+' : $unreadCount }}</span> @endif
+                    </a>
+                    <button type="button" id="menu-toggle" class="menu-button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+                        <x-icon name="menu" class="icon-lg" />
+                    </button>
+                </div>
             </div>
             <div id="mobile-menu" class="mobile-menu">
                 <nav class="mobile-nav">
@@ -120,6 +132,9 @@
                 </div>
             </div>
         </header>
+
+        {{-- P13.3: bar atas laptop (cari + lonceng) --}}
+        @include('layouts.partials.topbar')
 
         <main class="page-main">
             <div class="page-head">

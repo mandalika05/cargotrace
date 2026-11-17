@@ -25,12 +25,14 @@ The API uses the **same Policies, Form Requests and Services as the web app**, s
 | `GET /exceptions`, `GET /dashboard` | all | all | own only |
 | `GET /attention`, `GET /carriers`, `GET /locations`, `GET /settings/delay` | yes | yes | no |
 | `PUT /settings/delay` | yes | no | no |
+| `GET /notifications`, `POST /notifications/...` | own | own | own |
+| `GET /audit-logs` | yes | no | no |
 
 ## Endpoints
 
 | Method | Path | Notes |
 |---|---|---|
-| GET | `/shipments?q=&status=&carrier_id=&sort=&per_page=` | search, filter, sort (`newest, oldest, eta_asc, eta_desc, number`), pagination (`per_page` 1-50) |
+| GET | `/shipments?q=&status=&carrier_id=&origin_id=&destination_id=&delay=&date_field=&date_from=&date_to=&sort=&per_page=` | search, filters, sort (`newest, oldest, eta_asc, eta_desc, number`), pagination (`per_page` 1-50). `delay`: `delayed, low, medium, high, on_time` (same rules as the delay badge; cancelled shipments never match). `date_field`: `eta` (default), `departure`, `created`; `date_from`/`date_to` as `YYYY-MM-DD`, both days included. Invalid values give 422. |
 | POST / PUT | `/shipments`, `/shipments/{id}` | body as the web form, with `items[]`; `status` cannot be forced |
 | GET | `/shipments/{id}/tracking` | chronological timeline + `meta.current_location` |
 | POST | `/shipments/{id}/tracking` | `event_type` follows the status state machine; invalid jumps give 422 |
@@ -43,6 +45,9 @@ The API uses the **same Policies, Form Requests and Services as the web app**, s
 | GET | `/geocode?q=` | place name to coordinates (Nominatim/OpenStreetMap), staff only, `q` 3-150 chars, cached 24h; `available=false` when the service is unreachable |
 | GET | `/dashboard` | totals, by status, delayed, exception counts |
 | GET / PUT | `/settings/delay` | `delay_low_max_hours`, `delay_medium_max_hours` |
+| GET | `/notifications?filter=unread&per_page=` | own in-app notifications, newest first; response has `unread_count` |
+| POST | `/notifications/{id}/read`, `/notifications/read-all` | mark as read; another user's id gives 404 |
+| GET | `/audit-logs?entity=&action_type=&user_id=&date_from=&date_to=&q=&per_page=` | **admin only**; who changed what (`old_values`/`new_values`, `actor`, `ip_address`). `entity`: shipment, tracking_event, exception, user, carrier, location, setting. `action_type`: created, updated, deleted, restored. |
 
 ## Error format
 

@@ -8,6 +8,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ShipmentFilterRequest;
 use App\Http\Requests\ShipmentRequest;
 use App\Http\Resources\ShipmentResource;
 use App\Models\Shipment;
@@ -25,15 +26,15 @@ class ShipmentController extends Controller
     {
     }
 
-    // GET /api/v1/shipments?q=&status=&carrier_id=&sort=&per_page=
-    public function index(Request $request)
+    // GET /api/v1/shipments?q=&status=&carrier_id=&origin_id=&destination_id=&delay=&date_field=&date_from=&date_to=&sort=&per_page=
+    public function index(ShipmentFilterRequest $request)
     {
         Gate::authorize('viewAny', Shipment::class);
 
         $perPage = min(max((int) $request->query('per_page', 10), 1), 50);
 
         return ShipmentResource::collection(
-            $this->shipments->paginate($request->user(), $request->only(['q', 'status', 'carrier_id', 'sort']), $perPage)
+            $this->shipments->paginate($request->user(), $request->validated(), $perPage)
         );
     }
 

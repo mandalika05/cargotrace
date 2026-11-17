@@ -382,6 +382,50 @@
             },
             "description": ""
           }
+        },
+        {
+          "name": "List shipments (advanced filters)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/shipments?delay=high&status=IN_TRANSIT&date_from=2026-11-01&date_to=2026-12-31&sort=eta_asc",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "shipments"
+              ],
+              "query": [
+                {
+                  "key": "delay",
+                  "value": "high"
+                },
+                {
+                  "key": "status",
+                  "value": "IN_TRANSIT"
+                },
+                {
+                  "key": "date_from",
+                  "value": "2026-11-01"
+                },
+                {
+                  "key": "date_to",
+                  "value": "2026-12-31"
+                },
+                {
+                  "key": "sort",
+                  "value": "eta_asc"
+                }
+              ]
+            },
+            "description": "Server-side filters: delay status and ETA date range."
+          }
         }
       ]
     },
@@ -903,6 +947,151 @@
               "mode": "raw",
               "raw": "{\n  \"delay_low_max_hours\": 6,\n  \"delay_medium_max_hours\": 24\n}"
             }
+          }
+        }
+      ]
+    },
+    {
+      "name": "7. Notifications and audit log",
+      "item": [
+        {
+          "name": "My notifications",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/notifications",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "notifications"
+              ],
+              "query": [
+                {
+                  "key": "filter",
+                  "value": "unread",
+                  "disabled": true
+                },
+                {
+                  "key": "per_page",
+                  "value": "10",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": ""
+          }
+        },
+        {
+          "name": "Mark one as read",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/notifications/{{notification_id}}/read",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "notifications",
+                "{{notification_id}}",
+                "read"
+              ]
+            },
+            "description": ""
+          }
+        },
+        {
+          "name": "Mark all as read",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/notifications/read-all",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "notifications",
+                "read-all"
+              ]
+            },
+            "description": ""
+          }
+        },
+        {
+          "name": "Audit log (admin)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/audit-logs",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "audit-logs"
+              ],
+              "query": [
+                {
+                  "key": "entity",
+                  "value": "shipment",
+                  "disabled": true
+                },
+                {
+                  "key": "action_type",
+                  "value": "updated",
+                  "disabled": true
+                },
+                {
+                  "key": "user_id",
+                  "value": "1",
+                  "disabled": true
+                },
+                {
+                  "key": "date_from",
+                  "value": "2026-11-01",
+                  "disabled": true
+                },
+                {
+                  "key": "date_to",
+                  "value": "2026-11-30",
+                  "disabled": true
+                },
+                {
+                  "key": "q",
+                  "value": "CT-",
+                  "disabled": true
+                },
+                {
+                  "key": "per_page",
+                  "value": "20",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": ""
           }
         }
       ]

@@ -14,6 +14,9 @@
 @import './auth.css';
 @import './exceptions.css';
 @import './map.css';
+@import './dashboard.css';
+@import './filters.css';
+@import './notifications.css';
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';

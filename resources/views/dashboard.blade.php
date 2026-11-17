@@ -49,6 +49,9 @@
         </div>
     </div>
 
+    {{-- ===== Status, delay per carrier, dan peta (meniru mockup dosen, P13) ===== --}}
+    @include('dashboard.overview')
+
     {{-- ===== Needs attention (staf) ===== --}}
     @unless (auth()->user()->isCustomer())
         <div class="page-body">
@@ -75,16 +78,61 @@
         </div>
     @endunless
 
-    {{-- ===== Shipment terbaru ===== --}}
+    {{-- ===== Shipment terbaru: tabel di laptop, daftar ringkas di HP (meniru mockup dosen) ===== --}}
     <div class="page-body">
-        <h2 class="panel-title">Recent shipments</h2>
+        <div class="recent-head">
+            <div>
+                <h2 class="panel-title">Recent Shipments</h2>
+                <p class="chart-sub">Live overview of the latest shipments</p>
+            </div>
+            <div class="recent-actions">
+                <a href="{{ route('shipments.index') }}" class="btn-ghost"><x-icon name="sliders" /> Filter</a>
+                <a href="{{ route('exports.shipments') }}" class="btn-ghost"><x-icon name="file-text" /> Export</a>
+            </div>
+        </div>
+
         @if ($recent->isEmpty())
             <div class="empty-state">
                 <p class="empty-title">No shipments yet</p>
                 <p>Shipments will appear here as soon as they are created.</p>
             </div>
         @else
-            <div class="card recent-list">
+            <div class="only-desktop">
+                <div class="table-wrap">
+                    <table class="data-table table-fit">
+                        <thead>
+                            <tr>
+                                <th>Shipment No.</th>
+                                <th>Customer</th>
+                                <th>Carrier</th>
+                                <th>Origin</th>
+                                <th>Destination</th>
+                                <th>ETA</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($recent as $shipment)
+                                <tr>
+                                    <td><a href="{{ route('shipments.show', $shipment) }}" class="cell-link">{{ $shipment->shipment_number }}</a></td>
+                                    <td>{{ $shipment->customer->name }}</td>
+                                    <td>{{ $shipment->carrier->name }}</td>
+                                    <td>{{ $shipment->origin->city }}</td>
+                                    <td>{{ $shipment->destination->city }}</td>
+                                    <td>{{ $shipment->estimated_arrival_at?->format('d M Y') }}</td>
+                                    <td class="cell-status">
+                                        <span class="chip {{ $shipment->statusChip() }}">{{ $shipment->statusLabel() }}</span>
+                                        @php $delay = $shipment->delay(); @endphp
+                                        @if ($delay->isDelayed()) <div style="margin-top:.35rem"><span class="chip {{ $delay->chipClass() }}">{{ $delay->label() }}</span></div> @endif
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="only-mobile card recent-list">
                 @foreach ($recent as $shipment)
                     <a href="{{ route('shipments.show', $shipment) }}" class="recent-row">
                         <div>
@@ -97,4 +145,7 @@
             </div>
         @endif
     </div>
+
+    {{-- ===== KPI kelompok dan grafik tambahan (P13) ===== --}}
+    @include('dashboard.insights')
 @endsection

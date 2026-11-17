@@ -12,6 +12,12 @@ Leaflet and a Sanctum-secured REST API.
 - Shipments with cargo items, created in one database transaction; search, filter, sort and server-side pagination
 - Admin management of carriers, locations and users
 - Dashboard counters computed from the database
+- Weather forecast on the shipment page (Open-Meteo, no API key), public tracking page at `/track`, and CSV export of the shipment list
+- Route map per shipment (Leaflet + OpenStreetMap): origin, destination and tracking-point markers with popups, plus geocoding (place name to coordinates) for locations and tracking events
+- Dashboard KPIs (on-time delivery rate, delay rate, exception rate, average delay, average exception resolution time) and charts (status, carrier, exception type, monthly trend) with Chart.js, scoped per role
+- In-app notifications (bell in the top bar + Notifications page): customers are told about status changes, ETA changes and exceptions on their shipments; staff are told about new exceptions. Optional email channel with `NOTIFY_BY_EMAIL=true`
+- Audit log (admin only): every important change (shipments, tracking events, exceptions, users, carriers, locations, settings) is recorded automatically with actor, old/new values and IP; passwords are never logged. Append-only. Can be disabled with `AUDIT_ENABLED=false`
+- Search and filters on the shipment list, REST API and CSV export: number/customer, status, carrier, origin, destination, delay status (low/medium/high/on time) and date range, with sorting and server-side pagination
 - Responsive UI (sidebar on desktop, hamburger menu and card lists on mobile)
 
 ## Problem

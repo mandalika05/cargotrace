@@ -13,6 +13,7 @@ namespace App\Http\Controllers;
 use App\Models\Shipment;
 use App\Services\MapService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
 class MapController extends Controller
@@ -22,5 +23,11 @@ class MapController extends Controller
         Gate::authorize('view', $shipment);
 
         return response()->json(['data' => $map->forShipment($shipment)]);
+    }
+
+    // Peta dashboard: posisi terkini shipment yang masih berjalan (customer: miliknya saja)
+    public function overview(Request $request, MapService $map): JsonResponse
+    {
+        return response()->json(['data' => $map->overview($request->user())]);
     }
 }

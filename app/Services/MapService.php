@@ -21,6 +21,7 @@ namespace App\Services;
 use App\Models\Location;
 use App\Models\Shipment;
 use App\Models\TrackingEvent;
+use App\Models\User;
 
 class MapService
 {
@@ -87,6 +88,77 @@ class MapService
             'current' => $current,
             'route' => $route,
             'remaining' => $remaining,
+        ];
+    }
+
+    /**
+     * PETA DASHBOARD: posisi terkini semua shipment yang MASIH BERJALAN (kartu "Shipment Map").
+     * Posisi = titik tracking terbaru yang punya koordinat; bila belum ada, lokasi asal.
+     * Customer hanya melihat shipment miliknya. Maksimal $limit shipment terbaru.
+     *
+     * @return array<string, mixed>
+     */
+    public function overview(User $user, int $limit = 100): array
+    {
+        $query = Shipment::query()
+            ->whereNotIn('status', Shipment::TERMINAL_STATUSES)
+            ->with(['origin', 'destination'])
+            ->orderByDesc('id')
+            ->limit($limit);
+
+        if ($user->isCustomer()) {
+            $query->where('customer_id', $user->id);
+        }
+
+        $shipments = $query->get();
+
+        // Semua event sekali jalan (bukan satu query per shipment), lalu dikelompokkan
+        $events = TrackingEvent::query()
+            ->whereIn('shipment_id', $shipments->pluck('id'))
+            ->whereNotIn('event_type', TrackingEvent::MARKER_TYPES)
+            ->with('location:id,latitude,longitude')
+            ->orderBy('occurred_at')
+            ->orderBy('id')
+            ->get()
+            ->groupBy('shipment_id');
+
+        $points = [];
+        foreach ($shipments as $shipment) {
+            $coords = null;
+            $source = 'current';
+
+            foreach (($events[$shipment->id] ?? collect())->reverse() as $event) {
+                $coords = $this->eventCoordinates($event);
+                if ($coords !== null) {
+                    break;
+                }
+            }
+
+            if ($coords === null && $shipment->origin && $shipment->origin->latitude !== null && $shipment->origin->longitude !== null) {
+                $coords = [(float) $shipment->origin->latitude, (float) $shipment->origin->longitude];
+                $source = 'origin';
+            }
+
+            if ($coords === null) {
+                continue; // tidak ada koordinat sama sekali
+            }
+
+            $points[] = [
+                'number' => $shipment->shipment_number,
+                'status' => $shipment->statusLabel(),
+                'route' => ($shipment->origin?->city ?? '-').' -> '.($shipment->destination?->city ?? '-'),
+                'url' => route('shipments.show', $shipment),
+                'delayed' => $shipment->delay()->isDelayed(),
+                'source' => $source,
+                'latitude' => $coords[0],
+                'longitude' => $coords[1],
+            ];
+        }
+
+        return [
+            'available' => $points !== [],
+            'message' => $points === [] ? 'No running shipment has a known position yet.' : null,
+            'points' => $points,
         ];
     }
 

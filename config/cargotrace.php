@@ -44,4 +44,17 @@ return [
     'map' => [
         'tile_url' => env('MAP_TILE_URL', 'https://tile.openstreetmap.org/{z}/{x}/{y}.png'),
     ],
+
+    // Audit log dan notifikasi (P13.3)
+    // - audit.enabled          : false = log audit dimatikan sepenuhnya.
+    // - notifications.mail     : true = notifikasi juga dikirim lewat email (fitur lanjutan).
+    //                            Atur MAIL_* di .env; MAIL_MAILER=log cukup untuk uji coba.
+    // Catatan: perubahan lewat artisan/seeder (konsol) TIDAK dicatat dan tidak membuat
+    // notifikasi, supaya data contoh tidak membanjiri lonceng. Aksi dari web/API selalu dicatat.
+    'audit' => [
+        'enabled' => env('AUDIT_ENABLED', true),
+    ],
+    'notifications' => [
+        'mail' => env('NOTIFY_BY_EMAIL', false),
+    ],
 ];

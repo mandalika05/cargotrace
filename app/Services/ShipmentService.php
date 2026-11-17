@@ -5,7 +5,8 @@
  * POLA DARI: UTS MedikaCare (transaksi dengan rollback), dipakai ulang untuk
  *            "shipment + item barang = satu paket".
  * ISI      :
- *   paginate()       daftar + search + filter + sort + pagination (server-side)
+ *   paginate()       daftar + search + filter (status, carrier, origin, destination,
+ *                    rentang tanggal, status delay) + sort + pagination (server-side)
  *   create()         buat shipment + item dalam SATU transaksi
  *   update()         ubah shipment + item (hanya jika belum terminal)
  *   delete()         soft delete
@@ -20,16 +21,32 @@ namespace App\Services;
 use App\Models\Shipment;
 use App\Models\User;
 use DomainException;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class ShipmentService
 {
+    // Pilihan filter (P13.2). Daftar putih: dipakai juga oleh ShipmentFilterRequest.
+    public const DELAY_FILTERS = ['delayed', 'low', 'medium', 'high', 'on_time'];
+    public const DATE_FIELDS = ['eta', 'departure', 'created'];
+    public const SORTS = ['newest', 'oldest', 'eta_asc', 'eta_desc', 'number'];
+
     /**
      * Daftar shipment untuk halaman index.
      * Customer OTOMATIS hanya melihat miliknya (dibatasi di sini, bukan di tampilan).
-     * $filters: q, status, carrier_id, sort (newest|oldest|eta_asc|eta_desc|number)
+     * $filters:
+     *   q                 nomor shipment (atau nama customer untuk staf)
+     *   status            salah satu status shipment
+     *   carrier_id        carrier
+     *   origin_id         lokasi asal          (P13.2)
+     *   destination_id    lokasi tujuan        (P13.2)
+     *   delay             delayed|low|medium|high|on_time (aturan EtaService)   (P13.2)
+     *   date_field        eta (bawaan)|departure|created: kolom tanggal yang disaring (P13.2)
+     *   date_from/to      rentang tanggal Y-m-d, dua ujungnya ikut (P13.2)
+     *   sort              newest|oldest|eta_asc|eta_desc|number
      */
     public function paginate(User $user, array $filters = [], int $perPage = 10): LengthAwarePaginator
     {
@@ -63,6 +80,34 @@ class ShipmentService
             $query->where('carrier_id', (int) $filters['carrier_id']);
         }
 
+        // ----- P13.2: filter tambahan -----
+        if (filled($filters['origin_id'] ?? null) && (int) $filters['origin_id'] > 0) {
+            $query->where('origin_id', (int) $filters['origin_id']);
+        }
+
+        if (filled($filters['destination_id'] ?? null) && (int) $filters['destination_id'] > 0) {
+            $query->where('destination_id', (int) $filters['destination_id']);
+        }
+
+        // Rentang tanggal: kolomnya dipilih dari daftar putih (bukan dari input mentah)
+        $dateColumn = match ($filters['date_field'] ?? 'eta') {
+            'departure' => 'expected_departure_at',
+            'created' => 'created_at',
+            default => 'estimated_arrival_at',
+        };
+        if ($from = $this->parseDate($filters['date_from'] ?? null)) {
+            $query->where($dateColumn, '>=', $from->startOfDay());
+        }
+        if ($to = $this->parseDate($filters['date_to'] ?? null)) {
+            $query->where($dateColumn, '<=', $to->endOfDay());
+        }
+
+        // Status delay: SELALU yang terakhir di antara filter, supaya hanya shipment yang
+        // sudah lolos filter lain yang dinilai.
+        if (filled($filters['delay'] ?? null) && in_array($filters['delay'], self::DELAY_FILTERS, true)) {
+            $query->whereIn('shipments.id', $this->idsWithDelay(clone $query, $filters['delay']));
+        }
+
         // Pilihan urutan dibatasi daftar putih (anti input kolom sembarang)
         match ($filters['sort'] ?? 'newest') {
             'oldest' => $query->oldest('id'),
@@ -73,6 +118,50 @@ class ShipmentService
         };
 
         return $query->paginate($perPage)->withQueryString();
+    }
+
+    /**
+     * Id shipment yang cocok dengan filter delay. Penilaian memakai EtaService::assess() yang
+     * SAMA dengan lencana di daftar dan dashboard, jadi hasil filter selalu konsisten
+     * (satu aturan, tidak ditulis ulang dalam SQL). Shipment CANCELLED tidak pernah cocok.
+     *
+     * @return array<int, int>
+     */
+    private function idsWithDelay(Builder $query, string $filter): array
+    {
+        $eta = app(EtaService::class);
+        $now = now();
+
+        return $query->setEagerLoads([])
+            ->get(['shipments.id', 'status', 'expected_arrival_at', 'estimated_arrival_at', 'delivered_at'])
+            ->filter(function (Shipment $shipment) use ($eta, $now, $filter) {
+                $a = $eta->assess($shipment, $now);
+
+                return match ($filter) {
+                    'on_time' => $a->state === DelayAssessment::STATE_ON_TIME,
+                    'delayed' => $a->isDelayed(),
+                    'low' => $a->severity === 'LOW',
+                    'medium' => $a->severity === 'MEDIUM',
+                    'high' => $a->severity === 'HIGH',
+                    default => false,
+                };
+            })
+            ->pluck('id')
+            ->all();
+    }
+
+    // "2026-12-31" -> Carbon; teks yang bukan tanggal -> null (diabaikan, tidak error)
+    private function parseDate(mixed $value): ?Carbon
+    {
+        if (! is_string($value) || $value === '') {
+            return null;
+        }
+
+        try {
+            return Carbon::createFromFormat('!Y-m-d', $value) ?: null;
+        } catch (\Throwable) {
+            return null;
+        }
     }
 
     /**

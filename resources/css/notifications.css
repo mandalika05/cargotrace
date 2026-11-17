@@ -1,0 +1,58 @@
+/* ============================================================
+   BUAT APA : Gaya bar atas (cari + lonceng), dropdown notifikasi, halaman Notifications
+              dan Audit log (P13.3).
+   ============================================================ */
+
+/* ---------- Bar atas (laptop saja) ---------- */
+.topbar { display: none; }
+@media (min-width: 64rem) {
+  .topbar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; max-width: 80rem; margin: 0 auto; padding: 1rem 2rem 0; }
+}
+.topbar-search { display: flex; align-items: center; gap: 0.5rem; flex: 1; max-width: 26rem; padding: 0.5rem 0.9rem; border-radius: 9999px; background: #fffefb; border: 1px solid rgba(15, 47, 42, 0.12); color: #6b7a76; }
+.topbar-search:focus-within { border-color: #1f8a70; box-shadow: 0 0 0 3px rgba(31, 138, 112, 0.15); }
+.topbar-search-input { flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; font-size: 0.88rem; color: #0f2f2a; }
+
+/* ---------- Lonceng ---------- */
+.bell { position: relative; }
+.bell > summary { list-style: none; }
+.bell > summary::-webkit-details-marker { display: none; }
+.bell-button { position: relative; display: grid; place-items: center; width: 2.6rem; height: 2.6rem; border-radius: 9999px; background: #fffefb; border: 1px solid rgba(15, 47, 42, 0.12); color: #0f2f2a; cursor: pointer; }
+.bell-button:hover, .bell[open] .bell-button { background: #eef6f3; }
+.bell-badge { position: absolute; top: -0.25rem; right: -0.25rem; min-width: 1.1rem; height: 1.1rem; padding: 0 0.28rem; border-radius: 9999px; background: #c0392b; color: #fff; font-size: 0.64rem; font-weight: 800; line-height: 1.1rem; text-align: center; }
+.bell-mobile { position: relative; }
+.mobile-actions { display: flex; align-items: center; gap: 0.5rem; }
+
+.bell-panel { position: absolute; right: 0; top: calc(100% + 0.5rem); z-index: 40; width: 22rem; max-width: calc(100vw - 2rem); border-radius: 1rem; background: #fffefb; border: 1px solid rgba(15, 47, 42, 0.12); box-shadow: 0 18px 40px rgba(15, 47, 42, 0.18); overflow: hidden; }
+.bell-head { display: flex; align-items: center; justify-content: space-between; padding: 0.75rem 1rem; border-bottom: 1px solid rgba(15, 47, 42, 0.08); color: #0f2f2a; }
+.bell-link { border: 0; background: none; color: #1f8a70; font-size: 0.78rem; font-weight: 800; cursor: pointer; }
+.bell-item { display: flex; gap: 0.7rem; width: 100%; padding: 0.7rem 1rem; border: 0; border-bottom: 1px solid rgba(15, 47, 42, 0.06); background: transparent; text-align: left; cursor: pointer; }
+.bell-item:hover { background: #f3f8f6; }
+.bell-item.is-unread { background: #f0f8f5; }
+.bell-text { display: flex; flex-direction: column; gap: 0.1rem; min-width: 0; }
+.bell-title { font-size: 0.82rem; font-weight: 800; color: #0f2f2a; overflow-wrap: anywhere; }
+.bell-msg { font-size: 0.78rem; color: #4a5a56; overflow-wrap: anywhere; }
+.bell-time { font-size: 0.7rem; color: #8a9692; }
+.bell-empty { padding: 1.4rem 1rem; text-align: center; font-size: 0.84rem; color: #6b7a76; }
+.bell-footer { display: block; padding: 0.7rem 1rem; text-align: center; font-size: 0.82rem; font-weight: 800; color: #1f8a70; background: #f7faf8; }
+.bell-footer:hover { background: #eef6f3; }
+
+/* Titik warna menurut level notifikasi */
+.bell-dot { flex: none; width: 0.6rem; height: 0.6rem; margin-top: 0.35rem; border-radius: 9999px; background: #0e7c86; }
+.bell-dot-success { background: #2e9e5b; }
+.bell-dot-warning { background: #e08a1e; }
+.bell-dot-danger { background: #c0392b; }
+
+/* ---------- Halaman Notifications ---------- */
+.notif-tabs { display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap; }
+.notif-list { display: flex; flex-direction: column; gap: 0.6rem; }
+.notif-row { display: flex; gap: 0.8rem; align-items: flex-start; width: 100%; padding: 0.9rem 1.1rem; border-radius: 0.9rem; border: 1px solid rgba(15, 47, 42, 0.1); background: #fffefb; text-align: left; cursor: pointer; }
+.notif-row:hover { border-color: #1f8a70; }
+.notif-row.is-unread { background: #f0f8f5; border-color: rgba(31, 138, 112, 0.35); }
+.notif-title { font-weight: 800; color: #0f2f2a; overflow-wrap: anywhere; }
+.notif-msg { font-size: 0.86rem; color: #4a5a56; overflow-wrap: anywhere; }
+.notif-time { font-size: 0.74rem; color: #8a9692; margin-top: 0.15rem; }
+
+/* ---------- Halaman Audit log ---------- */
+.audit-changes { font-size: 0.78rem; color: #4a5a56; overflow-wrap: anywhere; }
+.audit-changes div { margin-bottom: 0.1rem; }
+.audit-table td { vertical-align: top; }

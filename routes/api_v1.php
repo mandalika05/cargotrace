@@ -63,6 +63,14 @@ Route::prefix('v1')->name('api.')->group(function () {
             Route::get('/settings/delay', [LookupController::class, 'delaySettings'])->name('settings.delay');
         });
 
+        // Notifikasi in-app (milik sendiri) - P13.3
+        Route::get('/notifications', [\App\Http\Controllers\Api\V1\NotificationController::class, 'index'])->name('notifications.index');
+        Route::post('/notifications/read-all', [\App\Http\Controllers\Api\V1\NotificationController::class, 'readAll'])->name('notifications.read-all');
+        Route::post('/notifications/{id}/read', [\App\Http\Controllers\Api\V1\NotificationController::class, 'read'])->whereUuid('id')->name('notifications.read');
+
+        // Audit log: khusus Admin - P13.3
+        Route::get('/audit-logs', [\App\Http\Controllers\Api\V1\AuditLogController::class, 'index'])->middleware('role:admin')->name('audit-logs.index');
+
         // Khusus Admin
         Route::put('/settings/delay', [LookupController::class, 'updateDelaySettings'])->middleware('role:admin')->name('settings.delay.update');
     });

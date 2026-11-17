@@ -10,6 +10,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ShipmentFilterRequest;
 use App\Http\Requests\ShipmentRequest;
 use App\Models\Carrier;
 use App\Models\Location;
@@ -28,17 +29,32 @@ class ShipmentController extends Controller
     }
 
     // Daftar + search + filter + sort + pagination
-    public function index(Request $request): View
+    public function index(ShipmentFilterRequest $request): View
     {
         Gate::authorize('viewAny', Shipment::class);
 
-        $filters = $request->only(['q', 'status', 'carrier_id', 'sort']);
+        // Hanya filter yang LOLOS validasi (lihat ShipmentFilterRequest)
+        $filters = $request->validated();
 
         return view('shipments.index', [
             'shipments' => $this->shipments->paginate($request->user(), $filters),
             'carriers' => Carrier::orderBy('name')->get(['id', 'name']),
+            'locations' => $this->filterLocations($request->user()),
             'filters' => $filters,
         ]);
+    }
+
+    // Pilihan Origin/Destination di filter. Customer hanya melihat lokasi dari shipment miliknya.
+    private function filterLocations(User $user)
+    {
+        $query = Location::orderBy('name');
+
+        if ($user->isCustomer()) {
+            $own = Shipment::where('customer_id', $user->id)->get(['origin_id', 'destination_id']);
+            $query->whereIn('id', $own->pluck('origin_id')->merge($own->pluck('destination_id'))->unique()->all());
+        }
+
+        return $query->get(['id', 'name', 'city']);
     }
 
     public function create(): View
