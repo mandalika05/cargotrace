@@ -24,7 +24,9 @@ class AuditLogTest extends TestCase
     public function test_an_update_is_audited_with_the_actor(): void
     {
         $admin = User::factory()->admin()->create();
-        $shipment = Shipment::factory()->create();
+        // Nilai awal DIPASTIKAN berbeda dari nilai baru. Tanpa ini, factory yang memilih jenis kargo
+        // acak kadang sudah 'Electronics', sehingga tidak ada perubahan dan tidak ada audit (tes sesekali gagal).
+        $shipment = Shipment::factory()->create(['cargo_type' => 'Textiles']);
 
         $this->actingAs($admin);
         $shipment->forceFill(['cargo_type' => 'Electronics'])->save();
