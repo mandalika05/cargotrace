@@ -17,6 +17,7 @@
 @import './dashboard.css';
 @import './filters.css';
 @import './notifications.css';
+@import './shell.css';
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';

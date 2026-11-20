@@ -9,7 +9,9 @@
 @section('title', 'Sign in')
 
 @section('content')
-    <h2 class="form-title">Welcome back</h2>
+    {{-- Pertama kali buka di browser ini = "Welcome to CargoTrace"; sudah pernah masuk = "Welcome back"
+         (resources/js/greeting.js). Tulisan di bawah = cadangan bila JavaScript mati. --}}
+    <h2 class="form-title" data-welcome>Welcome to CargoTrace</h2>
     <p class="form-sub">Sign in to your CargoTrace account.</p>
 
     <form method="POST" action="{{ url('/login') }}" class="form-stack">
@@ -38,11 +40,12 @@
         New customer? <a href="{{ route('register') }}" class="link-accent">Create an account</a>
     </p>
 
-    {{-- Petunjuk akun demo: hanya muncul di lokal/staging, hilang di production --}}
-    @unless (app()->isProduction())
+    {{-- Akun demo (syarat dosen: live app + demo account). Tampil bila SHOW_DEMO_ACCOUNTS=true di .env;
+         bila tidak diisi: tampil di lokal, tersembunyi di production. --}}
+    @if (config('cargotrace.demo.show_accounts') ?? ! app()->isProduction())
         <details class="demo-box">
             <summary class="demo-summary">Demo accounts (password: <code>password</code>)</summary>
             <div class="demo-list">admin@cargotrace.test<br>operator@cargotrace.test<br>customer@cargotrace.test</div>
         </details>
-    @endunless
+    @endif
 @endsection

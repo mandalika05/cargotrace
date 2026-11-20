@@ -57,4 +57,11 @@ return [
     'notifications' => [
         'mail' => env('NOTIFY_BY_EMAIL', false),
     ],
+
+    // P14.5: tampilkan kotak "Demo accounts" di halaman login. null = otomatis (tampil di lokal, sembunyi di production).
+    // Di hosting untuk UAS isi SHOW_DEMO_ACCOUNTS=true (dosen butuh akun demo).
+    'demo' => [
+        'show_accounts' => env('SHOW_DEMO_ACCOUNTS'),
+    ],
+
 ];

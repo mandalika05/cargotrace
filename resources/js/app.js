@@ -22,3 +22,6 @@ if (document.getElementById('dashboard-map')) import('./dashboard-map.js');
 
 // Lonceng notifikasi (P13.3): tutup dropdown saat klik di luar atau tekan Esc.
 import './topbar.js';
+
+// Sapaan sesuai jam di dashboard (P14.5).
+import './greeting.js';

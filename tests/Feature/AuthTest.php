@@ -21,7 +21,7 @@ class AuthTest extends TestCase
 
     public function test_login_page_is_shown_to_guests(): void
     {
-        $this->get('/login')->assertOk()->assertSee('Welcome back');
+        $this->get('/login')->assertOk()->assertSee('Welcome to CargoTrace');
     }
 
     public function test_user_can_login_with_valid_credentials(): void

@@ -1,0 +1,44 @@
+/* ============================================================
+   BUAT APA : Bar atas gelap ala mockup dosen (P14.5): judul halaman, cari, lonceng, profil.
+              Mengganti tampilan .topbar dari notifications.css (hanya di laptop).
+              Judul besar di isi halaman disembunyikan di laptop agar hemat tempat.
+   ============================================================ */
+
+.topbar { display: none; }
+
+@media (min-width: 64rem) {
+  .topbar {
+    display: block; position: sticky; top: 0; z-index: 30; max-width: none; margin: 0; padding: 0;
+    background: linear-gradient(90deg, #0f2f2a 0%, #0f4a43 100%);
+    border-bottom: 3px solid #14b8a6;
+    box-shadow: 0 6px 18px rgba(15, 47, 42, 0.18);
+  }
+  .topbar-inner { display: flex; align-items: center; gap: 1.25rem; padding: 0.7rem 2rem; }
+
+  /* Judul halaman: sans modern (Plus Jakarta Sans, sudah offline) */
+  .topbar-title { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-size: 1.35rem; font-weight: 800; letter-spacing: -0.01em; color: #fffefb; }
+
+  .topbar-search { flex: 0 1 22rem; background: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.18); color: rgba(255, 254, 251, 0.75); }
+  .topbar-search:focus-within { background: rgba(255, 255, 255, 0.16); border-color: #7fe8d4; box-shadow: 0 0 0 3px rgba(127, 232, 212, 0.2); }
+  .topbar-search-input { color: #fffefb; }
+  .topbar-search-input::placeholder { color: rgba(255, 254, 251, 0.6); }
+
+  .topbar .bell-button { background: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.18); color: #fffefb; }
+  .topbar .bell-button:hover, .topbar .bell[open] .bell-button { background: rgba(255, 255, 255, 0.2); }
+
+  .topbar-profile { display: flex; align-items: center; gap: 0.65rem; padding-left: 1.1rem; border-left: 1px solid rgba(255, 255, 255, 0.18); }
+
+  /* Judul di isi halaman: tetap ada di HTML (pembaca layar), tidak terlihat; tombol aksi tetap tampil */
+  .page-head-title { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .page-head { justify-content: flex-end; }
+  .page-main { padding-top: 1.5rem; }
+}
+
+/* Layar sempit (tablet kecil): sembunyikan nama di profil agar bar tidak sesak */
+@media (min-width: 64rem) and (max-width: 74rem) {
+  .topbar-profile .profile-text { display: none; }
+  .topbar-search { flex-basis: 15rem; }
+}
+
+/* Judul login (P14.5): teks bisa lebih panjang ("Welcome to CargoTrace"); bila terpaksa dua baris, dibuat seimbang */
+.login-panel .form-title { text-wrap: balance; }

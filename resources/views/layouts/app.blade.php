@@ -138,7 +138,7 @@
 
         <main class="page-main">
             <div class="page-head">
-                <div>
+                <div class="page-head-title">
                     <h1 class="page-title">@yield('title', 'Dashboard')</h1>
                     <div class="page-rule"></div>
                 </div>

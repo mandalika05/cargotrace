@@ -11,7 +11,8 @@
 @section('content')
     <div class="card welcome-card">
         <p class="eyebrow">Signed in as {{ auth()->user()->role }}</p>
-        <h2 class="welcome-title">Welcome, {{ auth()->user()->name }}</h2>
+        {{-- Sapaan sesuai jam di perangkat pengunjung (resources/js/greeting.js). Tulisan "Welcome" = cadangan bila JavaScript mati. --}}
+        <h2 class="welcome-title"><span data-greeting>Welcome</span>, {{ auth()->user()->name }}</h2>
         <p class="welcome-text">
             @if (auth()->user()->isCustomer())
                 Follow your shipments, see where they are and when they arrive.

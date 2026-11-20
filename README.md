@@ -18,6 +18,7 @@ Leaflet and a Sanctum-secured REST API.
 - In-app notifications (bell in the top bar + Notifications page): customers are told about status changes, ETA changes and exceptions on their shipments; staff are told about new exceptions. Optional email channel with `NOTIFY_BY_EMAIL=true`
 - Audit log (admin only): every important change (shipments, tracking events, exceptions, users, carriers, locations, settings) is recorded automatically with actor, old/new values and IP; passwords are never logged. Append-only. Can be disabled with `AUDIT_ENABLED=false`
 - Security hardening: security headers, rate-limited login, expiring API tokens, escaped output, allow-listed filters; see `docs/SECURITY.md`
+- Polished UI: dark top bar with page title, search, notification bell and profile; time-based greeting (Good morning / afternoon / evening); demo-account box on the login page controlled by `SHOW_DEMO_ACCOUNTS`
 - Search and filters on the shipment list, REST API and CSV export: number/customer, status, carrier, origin, destination, delay status (low/medium/high/on time) and date range, with sorting and server-side pagination
 - Responsive UI (sidebar on desktop, hamburger menu and card lists on mobile)
 
