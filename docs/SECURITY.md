@@ -21,7 +21,7 @@ How CargoTrace meets the non-functional security requirements (brief section 6).
 ## Production checklist
 1. `APP_ENV=production`, `APP_DEBUG=false`, a fresh `APP_KEY`.
 2. Serve over HTTPS and set `SESSION_SECURE_COOKIE=true`.
-3. Change every demo password; do not run the demo seeder on the live site.
+3. A public demo (e.g. the coursework deployment) seeds synthetic data with known demo passwords on purpose (`SEED_DEMO=true`, `SHOW_DEMO_ACCOUNTS=true`). For a real production system turn both off and change every password.
 4. `php artisan config:cache route:cache view:cache`.
 
 ## Known limits (honest notes)

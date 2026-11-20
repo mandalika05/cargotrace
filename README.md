@@ -4,9 +4,11 @@
 and a friendly tracking portal for customers. Built with Laravel 12, MySQL, Tailwind CSS,
 Leaflet and a Sanctum-secured REST API.
 
-> Status: **work in progress** (final project for Web Programming 2). This README grows with every stage.
+> Final project for Web Programming 2.
+> **Live demo:** _(add the Render URL here after the first deploy)_
+> Free hosting sleeps when idle: the first request may take about a minute.
 
-## Features so far
+## Features
 
 - Authentication with three roles (admin, operator, customer) and server-side authorization (middleware + Laravel Policy)
 - Shipments with cargo items, created in one database transaction; search, filter, sort and server-side pagination
@@ -56,8 +58,13 @@ npm run dev          # keep this running in one terminal
 php artisan serve    # in a second terminal -> http://127.0.0.1:8000
 ```
 
-Demo accounts (local only, password `password`):
-`admin@cargotrace.test`, `operator@cargotrace.test`, `customer@cargotrace.test`.
+Demo accounts (synthetic data, password `password`; also shown on the login page of the live demo):
+
+| Role | Email |
+|---|---|
+| Administrator | `admin@cargotrace.test` |
+| Logistics operator | `operator@cargotrace.test` |
+| Customer | `customer@cargotrace.test` |
 
 ## Run the tests
 
@@ -65,11 +72,30 @@ Demo accounts (local only, password `password`):
 php artisan test
 ```
 
+## Deployment
+
+Docker image (PHP 8.3 + Apache) deployed to Render with a MySQL-compatible database (TiDB Cloud Starter, free tier).
+Migrations run on start and demo data is seeded only when the database is empty. See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
+The test suite runs on every push through GitHub Actions (`.github/workflows/tests.yml`).
+
 ## Documentation
 
 - [Requirements and business rules](docs/REQUIREMENTS.md)
 - [Database design (ERD)](docs/ERD.md)
 - [Architecture](docs/ARCHITECTURE.md)
+- [Delay and exception rules](docs/DELAY_AND_EXCEPTIONS.md)
+- [REST API reference](docs/API.md) and the [Postman collection](docs/postman/CargoTrace.postman_collection.json)
+- [Security](docs/SECURITY.md)
+- [Deployment](docs/DEPLOYMENT.md)
+- [Final QA checklist](docs/QA_CHECKLIST.md)
+
+## Known limitations and future work
+
+- The live demo runs on free hosting: it sleeps when idle and the database is MySQL-compatible (TiDB), not MySQL itself.
+- No strict Content-Security-Policy yet (see `docs/SECURITY.md`); no two-factor login or email verification.
+- Notifications are in-app (email is optional and off by default); real-time push (WebSockets) is a possible next step.
+- Weather and geocoding depend on free public APIs (Open-Meteo, Nominatim); failures are handled gracefully but data may be unavailable.
+- Future work: carrier API integrations, document uploads (bill of lading), multi-language UI, exportable reports.
 
 ## Attribution
 

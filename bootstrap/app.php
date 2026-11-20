@@ -21,6 +21,10 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        // P15: di hosting (Render) aplikasi berada di belakang proxy HTTPS. Percayai header X-Forwarded-*
+        // supaya Laravel tahu koneksi aslinya HTTPS (link, cookie aman, header HSTS).
+        $middleware->trustProxies(at: '*');
+
         // P14: header keamanan di semua respons (web dan API)
         $middleware->append(\App\Http\Middleware\SecurityHeaders::class);
 

@@ -1,0 +1,52 @@
+# ============================================================
+# BUAT APA : "Blueprint" Render: mendefinisikan web service CargoTrace (P15).
+# CARA PAKAI: Render > New > Blueprint > pilih repo GitHub ini. Nilai bertanda sync:false
+#             (rahasia) diisi sendiri di dashboard Render, TIDAK ditulis di file ini.
+# ============================================================
+services:
+  - type: web
+    name: cargotrace
+    runtime: docker
+    plan: free
+    healthCheckPath: /up
+    envVars:
+      - key: APP_NAME
+        value: CargoTrace
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: "false"
+      - key: APP_KEY
+        sync: false
+      - key: APP_URL
+        sync: false
+      - key: LOG_CHANNEL
+        value: stderr
+      - key: DB_CONNECTION
+        value: mysql
+      - key: DB_HOST
+        sync: false
+      - key: DB_PORT
+        value: "4000"
+      - key: DB_DATABASE
+        sync: false
+      - key: DB_USERNAME
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
+      - key: MYSQL_ATTR_SSL_CA
+        value: /etc/ssl/certs/ca-certificates.crt
+      - key: SESSION_DRIVER
+        value: database
+      - key: CACHE_STORE
+        value: database
+      - key: QUEUE_CONNECTION
+        value: sync
+      - key: SESSION_SECURE_COOKIE
+        value: "true"
+      - key: SHOW_DEMO_ACCOUNTS
+        value: "true"
+      - key: RUN_MIGRATIONS
+        value: "true"
+      - key: SEED_DEMO
+        value: "true"
