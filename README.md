@@ -5,7 +5,8 @@ and a friendly tracking portal for customers. Built with Laravel 12, MySQL, Tail
 Leaflet and a Sanctum-secured REST API.
 
 > Final project for Web Programming 2.
-> **Live demo:** _(add the Render URL here after the first deploy)_
+>
+> **Live demo:** https://cargotrace-67702.containers.snapdeploy.app (demo login: `admin@cargotrace.test` / `password`)  
 > Free hosting sleeps when idle: the first request may take about a minute.
 
 ## Features
