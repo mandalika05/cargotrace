@@ -42,5 +42,13 @@ RUN mkdir -p storage/framework/cache/data storage/framework/sessions storage/fra
     && chmod -R ug+rwX storage bootstrap/cache \
     && chmod +x docker/entrypoint.sh
 
+# Jaga-jaga untuk hosting yang menimpa perintah start dengan "apache2-foreground"
+# (contoh: SnapDeploy). Perintah asli dipindah jadi apache2-foreground-real, dan
+# "apache2-foreground" diganti pembungkus yang menjalankan entrypoint kita dulu
+# (atur port, cache, migrasi, data demo) sebelum Apache menyala.
+RUN mv /usr/local/bin/apache2-foreground /usr/local/bin/apache2-foreground-real \
+    && printf '#!/bin/sh\nexec /var/www/html/docker/entrypoint.sh\n' > /usr/local/bin/apache2-foreground \
+    && chmod +x /usr/local/bin/apache2-foreground
+
 EXPOSE 10000
 ENTRYPOINT ["docker/entrypoint.sh"]

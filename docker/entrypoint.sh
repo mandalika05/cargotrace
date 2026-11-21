@@ -25,4 +25,5 @@ if [ "${SEED_DEMO:-false}" = "true" ]; then
     php artisan cargotrace:seed-if-empty
 fi
 
-exec apache2-foreground
+# pakai perintah asli (bukan pembungkus apache2-foreground di Dockerfile) supaya tidak berputar
+exec apache2-foreground-real
