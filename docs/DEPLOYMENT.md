@@ -8,7 +8,7 @@ Any host that runs Docker and offers a MySQL-compatible database works the same 
 
 | File | Purpose |
 |---|---|
-| `Dockerfile` | Two-stage build: Node builds CSS/JS, then PHP + Apache with `composer install --no-dev` |
+| `Dockerfile` | Two-stage build: Node builds CSS/JS, then PHP + Apache with `composer install` (dev packages stay: the demo seeder needs Faker) |
 | `docker/entrypoint.sh` | On start: listen on `$PORT`, cache config and views, migrate, seed demo data if empty |
 | `render.yaml` | Render Blueprint (service definition, non-secret settings) |
 | `.env.production.example` | Production settings reference (no real secrets) |

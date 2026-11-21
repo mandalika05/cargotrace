@@ -1,7 +1,7 @@
 # ============================================================
 # BUAT APA : Membangun image CargoTrace untuk hosting (Render, atau Docker di mana saja). P15.
 # TAHAP    : 1) "assets"  -> build CSS/JS dengan Node (Vite + Tailwind)
-#            2) image akhir -> PHP 8.3 + Apache, composer install (tanpa paket dev), hasil build tahap 1
+#            2) image akhir -> PHP 8.3 + Apache, composer install, hasil build tahap 1
 # JALAN    : docker/entrypoint.sh (cache config, migrasi, data demo bila kosong, lalu Apache)
 # PORT     : mengikuti variabel PORT dari hosting (default 10000)
 # ============================================================
@@ -32,12 +32,13 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www/html
 COPY composer.json composer.lock ./
-RUN composer install --no-dev --no-interaction --no-progress --no-scripts --no-autoloader --prefer-dist
+# Paket dev (Faker) SENGAJA ikut dipasang: seeder data demo memakai factory yang butuh fake().
+RUN composer install --no-interaction --no-progress --no-scripts --no-autoloader --prefer-dist
 
 COPY . .
 COPY --from=assets /app/public/build ./public/build
 RUN mkdir -p storage/framework/cache/data storage/framework/sessions storage/framework/views storage/logs bootstrap/cache \
-    && composer dump-autoload --no-dev --optimize --no-interaction \
+    && composer dump-autoload --optimize --no-interaction \
     && chown -R www-data:www-data storage bootstrap/cache \
     && chmod -R ug+rwX storage bootstrap/cache \
     && chmod +x docker/entrypoint.sh
