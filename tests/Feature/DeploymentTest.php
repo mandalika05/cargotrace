@@ -65,4 +65,15 @@ class DeploymentTest extends TestCase
         $this->assertMatchesRegularExpression('/^DB_PASSWORD=\s*(#.*)?$/m', $env);
         $this->assertStringContainsString('APP_DEBUG=false', $env);
     }
+
+    public function test_production_with_https_app_url_generates_https_links(): void
+    {
+        $this->app['env'] = 'production';
+        config(['app.url' => 'https://cargotrace.example.com']);
+
+        $this->app->getProvider(\App\Providers\AppServiceProvider::class)->boot();
+
+        $this->assertStringStartsWith('https://', url('/login'));
+        $this->assertStringStartsWith('https://', asset('favicon.ico'));
+    }
 }
